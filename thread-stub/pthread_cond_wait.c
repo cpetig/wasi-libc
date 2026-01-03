@@ -12,6 +12,9 @@ int pthread_cond_wait(pthread_cond_t *restrict c, pthread_mutex_t *restrict m)
 {
 	__pthread_mutex_unlock(m);
 #ifdef __wasip3__
+	if (c->__u.__i[0]==0) {
+		pthread_cond_init(c, 0);
+	}
 	uint8_t buf[1];
 	wasip3_waitable_status_t status = filesystem_stream_u8_read(c->__u.__i[0], buf, 1);
 	if (status == WASIP3_WAITABLE_STATUS_BLOCKED) {
