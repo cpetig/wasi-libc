@@ -318,6 +318,7 @@ static int poll_impl(struct pollfd *fds, size_t nfds, int timeout) {
     if (pollfd->events & ~(POLLRDNORM | POLLWRNORM)) {
       errno = EOPNOTSUPP;
       return_value = -1;
+      abort();
       goto cleanup_and_exit;
     }
 
@@ -341,6 +342,7 @@ static int poll_impl(struct pollfd *fds, size_t nfds, int timeout) {
       } else {
         errno = EOPNOTSUPP;
         return_value = -1;
+        abort();
         goto cleanup_and_exit;
       }
     }
@@ -365,6 +367,7 @@ static int poll_impl(struct pollfd *fds, size_t nfds, int timeout) {
       } else {
         errno = EOPNOTSUPP;
         return_value = -1;
+        abort();
         goto cleanup_and_exit;
       }
     }
