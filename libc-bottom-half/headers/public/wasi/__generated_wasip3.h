@@ -5,12 +5,12 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdint.h>
 
 typedef struct wasip3_string_t {
-  uint8_t *ptr;
+  uint8_t*ptr;
   size_t len;
 } wasip3_string_t;
 
@@ -18,8 +18,8 @@ typedef struct wasip3_string_t {
 
 typedef uint32_t wasip3_subtask_status_t;
 typedef uint32_t wasip3_subtask_t;
-#define WASIP3_SUBTASK_STATE(status) ((wasip3_subtask_state_t)((status) & 0xf))
-#define WASIP3_SUBTASK_HANDLE(status) ((wasip3_subtask_t)((status) >> 4))
+#define WASIP3_SUBTASK_STATE(status) ((wasip3_subtask_state_t) ((status) & 0xf))
+#define WASIP3_SUBTASK_HANDLE(status) ((wasip3_subtask_t) ((status) >> 4))
 
 typedef enum wasip3_subtask_state {
   WASIP3_SUBTASK_STARTING,
@@ -63,10 +63,9 @@ void wasip3_waitable_set_poll(wasip3_waitable_set_t set, wasip3_event_t *event);
 void wasip3_task_cancel(void);
 
 typedef uint32_t wasip3_waitable_status_t;
-#define WASIP3_WAITABLE_STATE(status)                                          \
-  ((wasip3_waitable_state_t)((status) & 0xf))
-#define WASIP3_WAITABLE_COUNT(status) ((uint32_t)((status) >> 4))
-#define WASIP3_WAITABLE_STATUS_BLOCKED ((wasip3_waitable_status_t) - 1)
+#define WASIP3_WAITABLE_STATE(status) ((wasip3_waitable_state_t) ((status) & 0xf))
+#define WASIP3_WAITABLE_COUNT(status) ((uint32_t) ((status) >> 4))
+#define WASIP3_WAITABLE_STATUS_BLOCKED ((wasip3_waitable_status_t) -1)
 
 typedef enum wasip3_waitable_state {
   WASIP3_WAITABLE_COMPLETED,
@@ -76,10 +75,12 @@ typedef enum wasip3_waitable_state {
 
 void wasip3_backpressure_inc(void);
 void wasip3_backpressure_dec(void);
-void *wasip3_context_get(void);
-void wasip3_context_set(void *);
+void* wasip3_context_get(void);
+void wasip3_context_set(void*);
 void wasip3_yield(void);
 uint32_t wasip3_yield_cancellable(void);
+
+
 
 typedef struct {
   wasip3_string_t f0;
@@ -173,16 +174,14 @@ typedef struct {
   terminal_stdin_own_terminal_input_t val;
 } terminal_stdin_option_own_terminal_input_t;
 
-typedef terminal_output_own_terminal_output_t
-    terminal_stdout_own_terminal_output_t;
+typedef terminal_output_own_terminal_output_t terminal_stdout_own_terminal_output_t;
 
 typedef struct {
   bool is_some;
   terminal_stdout_own_terminal_output_t val;
 } terminal_stdout_option_own_terminal_output_t;
 
-typedef terminal_output_own_terminal_output_t
-    terminal_stderr_own_terminal_output_t;
+typedef terminal_output_own_terminal_output_t terminal_stderr_own_terminal_output_t;
 
 typedef struct {
   bool is_some;
@@ -201,8 +200,8 @@ typedef uint64_t monotonic_clock_instant_t;
 
 // A time and date in seconds plus nanoseconds.
 typedef struct wall_clock_datetime_t {
-  uint64_t seconds;
-  uint32_t nanoseconds;
+  uint64_t   seconds;
+  uint32_t   nanoseconds;
 } wall_clock_datetime_t;
 
 typedef wall_clock_datetime_t filesystem_datetime_t;
@@ -211,7 +210,7 @@ typedef wall_clock_datetime_t filesystem_datetime_t;
 typedef uint64_t filesystem_filesize_t;
 
 // The type of a filesystem object referenced by a descriptor.
-//
+// 
 // Note: This was called `filetype` in earlier versions of WASI.
 typedef uint8_t filesystem_descriptor_type_t;
 
@@ -234,7 +233,7 @@ typedef uint8_t filesystem_descriptor_type_t;
 #define FILESYSTEM_DESCRIPTOR_TYPE_SOCKET 7
 
 // Descriptor flags.
-//
+// 
 // Note: This was called `fdflags` in earlier versions of WASI.
 typedef uint8_t filesystem_descriptor_flags_t;
 
@@ -245,7 +244,7 @@ typedef uint8_t filesystem_descriptor_flags_t;
 // Request that writes be performed according to synchronized I/O file
 // integrity completion. The data stored in the file and the file's
 // metadata are synchronized. This is similar to `O_SYNC` in POSIX.
-//
+// 
 // The precise semantics of this operation have not yet been defined for
 // WASI. At this time, it should be interpreted as a request, and not a
 // requirement.
@@ -253,26 +252,26 @@ typedef uint8_t filesystem_descriptor_flags_t;
 // Request that writes be performed according to synchronized I/O data
 // integrity completion. Only the data stored in the file is
 // synchronized. This is similar to `O_DSYNC` in POSIX.
-//
+// 
 // The precise semantics of this operation have not yet been defined for
 // WASI. At this time, it should be interpreted as a request, and not a
 // requirement.
 #define FILESYSTEM_DESCRIPTOR_FLAGS_DATA_INTEGRITY_SYNC (1 << 3)
 // Requests that reads be performed at the same level of integrity
 // requested for writes. This is similar to `O_RSYNC` in POSIX.
-//
+// 
 // The precise semantics of this operation have not yet been defined for
 // WASI. At this time, it should be interpreted as a request, and not a
 // requirement.
 #define FILESYSTEM_DESCRIPTOR_FLAGS_REQUESTED_WRITE_SYNC (1 << 4)
 // Mutating directories mode: Directory contents may be mutated.
-//
+// 
 // When this flag is unset on a descriptor, operations using the
 // descriptor which would create, rename, delete, modify the data or
 // metadata of filesystem objects, or obtain another handle which
 // would permit any of those, shall fail with `error-code::read-only` if
 // they would otherwise succeed.
-//
+// 
 // This may only be set on directories.
 #define FILESYSTEM_DESCRIPTOR_FLAGS_MUTATE_DIRECTORY (1 << 5)
 
@@ -304,38 +303,38 @@ typedef struct {
 } filesystem_option_datetime_t;
 
 // File attributes.
-//
+// 
 // Note: This was called `filestat` in earlier versions of WASI.
 typedef struct filesystem_descriptor_stat_t {
   // File type.
-  filesystem_descriptor_type_t type;
+  filesystem_descriptor_type_t   type;
   // Number of hard links to the file.
-  filesystem_link_count_t link_count;
+  filesystem_link_count_t   link_count;
   // For regular files, the file size in bytes. For symbolic links, the
   // length in bytes of the pathname contained in the symbolic link.
-  filesystem_filesize_t size;
+  filesystem_filesize_t   size;
   // Last data access timestamp.
-  //
+  // 
   // If the `option` is none, the platform doesn't maintain an access
   // timestamp for this file.
-  filesystem_option_datetime_t data_access_timestamp;
+  filesystem_option_datetime_t   data_access_timestamp;
   // Last data modification timestamp.
-  //
+  // 
   // If the `option` is none, the platform doesn't maintain a
   // modification timestamp for this file.
-  filesystem_option_datetime_t data_modification_timestamp;
+  filesystem_option_datetime_t   data_modification_timestamp;
   // Last file status-change timestamp.
-  //
+  // 
   // If the `option` is none, the platform doesn't maintain a
   // status-change timestamp for this file.
-  filesystem_option_datetime_t status_change_timestamp;
+  filesystem_option_datetime_t   status_change_timestamp;
 } filesystem_descriptor_stat_t;
 
 // When setting a timestamp, this gives the value to set it to.
 typedef struct filesystem_new_timestamp_t {
   uint8_t tag;
   union {
-    filesystem_datetime_t timestamp;
+    filesystem_datetime_t     timestamp;
   } val;
 } filesystem_new_timestamp_t;
 
@@ -350,9 +349,9 @@ typedef struct filesystem_new_timestamp_t {
 // A directory entry.
 typedef struct filesystem_directory_entry_t {
   // The type of the file referred to by this directory entry.
-  filesystem_descriptor_type_t type;
+  filesystem_descriptor_type_t   type;
   // The name of the object.
-  wasip3_string_t name;
+  wasip3_string_t   name;
 } filesystem_directory_entry_t;
 
 // Error codes returned by functions, similar to `errno` in POSIX.
@@ -407,8 +406,7 @@ typedef uint8_t filesystem_error_code_t;
 #define FILESYSTEM_ERROR_CODE_INSUFFICIENT_MEMORY 21
 // No space left on device, similar to `ENOSPC` in POSIX.
 #define FILESYSTEM_ERROR_CODE_INSUFFICIENT_SPACE 22
-// Not a directory or a symbolic link to a directory, similar to `ENOTDIR` in
-// POSIX.
+// Not a directory or a symbolic link to a directory, similar to `ENOTDIR` in POSIX.
 #define FILESYSTEM_ERROR_CODE_NOT_DIRECTORY 23
 // Directory not empty, similar to `ENOTEMPTY` in POSIX.
 #define FILESYSTEM_ERROR_CODE_NOT_EMPTY 24
@@ -461,9 +459,9 @@ typedef uint8_t filesystem_advice_t;
 // 128-bit integer type.
 typedef struct filesystem_metadata_hash_value_t {
   // 64 bits of a 128-bit hash value.
-  uint64_t lower;
+  uint64_t   lower;
   // Another 64 bits of a 128-bit hash value.
-  uint64_t upper;
+  uint64_t   upper;
 } filesystem_metadata_hash_value_t;
 
 typedef struct filesystem_own_descriptor_t {
@@ -597,7 +595,7 @@ typedef struct {
 typedef monotonic_clock_duration_t sockets_duration_t;
 
 // Error codes.
-//
+// 
 // In theory, every API can return any error code.
 // In practice, API's typically only return the errors documented per API
 // combined with a couple of errors that are always possible:
@@ -605,38 +603,35 @@ typedef monotonic_clock_duration_t sockets_duration_t;
 // - `access-denied`
 // - `not-supported`
 // - `out-of-memory`
-//
-// See each individual API for what the POSIX equivalents are. They sometimes
-// differ per API.
+// 
+// See each individual API for what the POSIX equivalents are. They sometimes differ per API.
 typedef uint8_t sockets_error_code_t;
 
 // Unknown error
 #define SOCKETS_ERROR_CODE_UNKNOWN 0
 // Access denied.
-//
+// 
 // POSIX equivalent: EACCES, EPERM
 #define SOCKETS_ERROR_CODE_ACCESS_DENIED 1
 // The operation is not supported.
-//
+// 
 // POSIX equivalent: EOPNOTSUPP
 #define SOCKETS_ERROR_CODE_NOT_SUPPORTED 2
 // One of the arguments is invalid.
-//
+// 
 // POSIX equivalent: EINVAL
 #define SOCKETS_ERROR_CODE_INVALID_ARGUMENT 3
 // Not enough memory to complete the operation.
-//
+// 
 // POSIX equivalent: ENOMEM, ENOBUFS, EAI_MEMORY
 #define SOCKETS_ERROR_CODE_OUT_OF_MEMORY 4
 // The operation timed out before it could finish completely.
 #define SOCKETS_ERROR_CODE_TIMEOUT 5
 // The operation is not valid in the socket's current state.
 #define SOCKETS_ERROR_CODE_INVALID_STATE 6
-// A bind operation failed because the provided address is not an address that
-// the `network` can bind to.
+// A bind operation failed because the provided address is not an address that the `network` can bind to.
 #define SOCKETS_ERROR_CODE_ADDRESS_NOT_BINDABLE 7
-// A bind operation failed because the provided address is already in use or
-// because there are no ephemeral ports available.
+// A bind operation failed because the provided address is already in use or because there are no ephemeral ports available.
 #define SOCKETS_ERROR_CODE_ADDRESS_IN_USE 8
 // The remote address is not reachable
 #define SOCKETS_ERROR_CODE_REMOTE_UNREACHABLE 9
@@ -658,28 +653,28 @@ typedef uint8_t sockets_ip_address_family_t;
 #define SOCKETS_IP_ADDRESS_FAMILY_IPV6 1
 
 typedef struct sockets_ipv4_address_t {
-  uint8_t f0;
-  uint8_t f1;
-  uint8_t f2;
-  uint8_t f3;
+  uint8_t   f0;
+  uint8_t   f1;
+  uint8_t   f2;
+  uint8_t   f3;
 } sockets_ipv4_address_t;
 
 typedef struct sockets_ipv6_address_t {
-  uint16_t f0;
-  uint16_t f1;
-  uint16_t f2;
-  uint16_t f3;
-  uint16_t f4;
-  uint16_t f5;
-  uint16_t f6;
-  uint16_t f7;
+  uint16_t   f0;
+  uint16_t   f1;
+  uint16_t   f2;
+  uint16_t   f3;
+  uint16_t   f4;
+  uint16_t   f5;
+  uint16_t   f6;
+  uint16_t   f7;
 } sockets_ipv6_address_t;
 
 typedef struct sockets_ip_address_t {
   uint8_t tag;
   union {
-    sockets_ipv4_address_t ipv4;
-    sockets_ipv6_address_t ipv6;
+    sockets_ipv4_address_t     ipv4;
+    sockets_ipv6_address_t     ipv6;
   } val;
 } sockets_ip_address_t;
 
@@ -688,27 +683,27 @@ typedef struct sockets_ip_address_t {
 
 typedef struct sockets_ipv4_socket_address_t {
   // sin_port
-  uint16_t port;
+  uint16_t   port;
   // sin_addr
-  sockets_ipv4_address_t address;
+  sockets_ipv4_address_t   address;
 } sockets_ipv4_socket_address_t;
 
 typedef struct sockets_ipv6_socket_address_t {
   // sin6_port
-  uint16_t port;
+  uint16_t   port;
   // sin6_flowinfo
-  uint32_t flow_info;
+  uint32_t   flow_info;
   // sin6_addr
-  sockets_ipv6_address_t address;
+  sockets_ipv6_address_t   address;
   // sin6_scope_id
-  uint32_t scope_id;
+  uint32_t   scope_id;
 } sockets_ipv6_socket_address_t;
 
 typedef struct sockets_ip_socket_address_t {
   uint8_t tag;
   union {
-    sockets_ipv4_socket_address_t ipv4;
-    sockets_ipv6_socket_address_t ipv6;
+    sockets_ipv4_socket_address_t     ipv4;
+    sockets_ipv6_socket_address_t     ipv6;
   } val;
 } sockets_ip_socket_address_t;
 
@@ -861,23 +856,23 @@ typedef uint8_t ip_name_lookup_error_code_t;
 // Unknown error
 #define IP_NAME_LOOKUP_ERROR_CODE_UNKNOWN 0
 // Access denied.
-//
+// 
 // POSIX equivalent: EACCES, EPERM
 #define IP_NAME_LOOKUP_ERROR_CODE_ACCESS_DENIED 1
 // `name` is a syntactically invalid domain name or IP address.
-//
+// 
 // POSIX equivalent: EINVAL
 #define IP_NAME_LOOKUP_ERROR_CODE_INVALID_ARGUMENT 2
 // Name does not exist or has no suitable associated IP addresses.
-//
+// 
 // POSIX equivalent: EAI_NONAME, EAI_NODATA, EAI_ADDRFAMILY
 #define IP_NAME_LOOKUP_ERROR_CODE_NAME_UNRESOLVABLE 3
 // A temporary failure in name resolution occurred.
-//
+// 
 // POSIX equivalent: EAI_AGAIN
 #define IP_NAME_LOOKUP_ERROR_CODE_TEMPORARY_RESOLVER_FAILURE 4
 // A permanent failure in name resolution occurred.
-//
+// 
 // POSIX equivalent: EAI_FAIL
 #define IP_NAME_LOOKUP_ERROR_CODE_PERMANENT_RESOLVER_FAILURE 5
 
@@ -905,15 +900,14 @@ typedef struct {
 
 // Imported Functions from `wasi:cli/environment@0.3.0-rc-2025-09-16`
 // Get the POSIX-style environment variables.
-//
+// 
 // Each environment variable is provided as a pair of string variable names
 // and string value.
-//
+// 
 // Morally, these are a value import, but until value imports are available
 // in the component model, this import function should return the same
 // values each time it is called.
-extern void
-environment_get_environment(wasip3_list_tuple2_string_string_t *ret);
+extern void environment_get_environment(wasip3_list_tuple2_string_string_t *ret);
 // Get the POSIX-style arguments to the program.
 extern void environment_get_arguments(wasip3_list_string_t *ret);
 // Return a path that programs should use as their initial current working
@@ -926,71 +920,63 @@ _Noreturn extern void exit_exit(exit_result_void_void_t *status);
 
 // Imported Functions from `wasi:cli/stdin@0.3.0-rc-2025-09-16`
 // Return a stream for reading from stdin.
-//
+// 
 // This function returns a stream which provides data read from stdin,
 // and a future to signal read results.
-//
+// 
 // If the stream's readable end is dropped the future will resolve to success.
-//
+// 
 // If the stream's writable end is dropped the future will either resolve to
 // success if stdin was closed by the writer or to an error-code if reading
 // failed for some other reason.
-//
+// 
 // Multiple streams may be active at the same time. The behavior of concurrent
 // reads is implementation-specific.
-extern void stdin_read_via_stream(
-    stdin_tuple2_stream_u8_future_result_void_error_code_t *ret);
+extern void stdin_read_via_stream(stdin_tuple2_stream_u8_future_result_void_error_code_t *ret);
 
 // Imported Functions from `wasi:cli/stdout@0.3.0-rc-2025-09-16`
 // Write the given stream to stdout.
-//
+// 
 // If the stream's writable end is dropped this function will either return
 // success once the entire contents of the stream have been written or an
 // error-code representing a failure.
-//
+// 
 // Otherwise if there is an error the readable end of the stream will be
 // dropped and this function will return an error-code.
-extern wasip3_subtask_status_t
-stdout_write_via_stream(stdin_stream_u8_t data,
-                        stdout_result_void_error_code_t *result);
+extern wasip3_subtask_status_t stdout_write_via_stream(stdin_stream_u8_t data, stdout_result_void_error_code_t *result);
 
 // Imported Functions from `wasi:cli/stderr@0.3.0-rc-2025-09-16`
 // Write the given stream to stderr.
-//
+// 
 // If the stream's writable end is dropped this function will either return
 // success once the entire contents of the stream have been written or an
 // error-code representing a failure.
-//
+// 
 // Otherwise if there is an error the readable end of the stream will be
 // dropped and this function will return an error-code.
-extern wasip3_subtask_status_t
-stderr_write_via_stream(stdin_stream_u8_t data,
-                        stderr_result_void_error_code_t *result);
+extern wasip3_subtask_status_t stderr_write_via_stream(stdin_stream_u8_t data, stderr_result_void_error_code_t *result);
 
 // Imported Functions from `wasi:cli/terminal-stdin@0.3.0-rc-2025-09-16`
 // If stdin is connected to a terminal, return a `terminal-input` handle
 // allowing further interaction with it.
-extern bool
-terminal_stdin_get_terminal_stdin(terminal_stdin_own_terminal_input_t *ret);
+extern bool terminal_stdin_get_terminal_stdin(terminal_stdin_own_terminal_input_t *ret);
 
 // Imported Functions from `wasi:cli/terminal-stdout@0.3.0-rc-2025-09-16`
 // If stdout is connected to a terminal, return a `terminal-output` handle
 // allowing further interaction with it.
-extern bool
-terminal_stdout_get_terminal_stdout(terminal_stdout_own_terminal_output_t *ret);
+extern bool terminal_stdout_get_terminal_stdout(terminal_stdout_own_terminal_output_t *ret);
 
 // Imported Functions from `wasi:cli/terminal-stderr@0.3.0-rc-2025-09-16`
 // If stderr is connected to a terminal, return a `terminal-output` handle
 // allowing further interaction with it.
-extern bool
-terminal_stderr_get_terminal_stderr(terminal_stderr_own_terminal_output_t *ret);
+extern bool terminal_stderr_get_terminal_stderr(terminal_stderr_own_terminal_output_t *ret);
 
 // Imported Functions from `wasi:clocks/monotonic-clock@0.3.0-rc-2025-09-16`
 // Read the current value of the clock.
-//
+// 
 // The clock is monotonic, therefore calling this function repeatedly will
 // produce a sequence of non-decreasing values.
-//
+// 
 // For completeness, this function traps if it's not possible to represent
 // the value of the clock in an `instant`. Consequently, implementations
 // should ensure that the starting time is low enough to avoid the
@@ -1000,428 +986,339 @@ extern monotonic_clock_instant_t monotonic_clock_now(void);
 // corresponding to a clock tick.
 extern monotonic_clock_duration_t monotonic_clock_get_resolution(void);
 // Wait until the specified instant has occurred.
-extern wasip3_subtask_status_t
-monotonic_clock_wait_until(monotonic_clock_instant_t when);
+extern wasip3_subtask_status_t monotonic_clock_wait_until(monotonic_clock_instant_t when);
 // Wait for the specified duration to elapse.
-extern wasip3_subtask_status_t
-monotonic_clock_wait_for(monotonic_clock_duration_t how_long);
+extern wasip3_subtask_status_t monotonic_clock_wait_for(monotonic_clock_duration_t how_long);
 
 // Imported Functions from `wasi:clocks/wall-clock@0.3.0-rc-2025-09-16`
 // Read the current value of the clock.
-//
+// 
 // This clock is not monotonic, therefore calling this function repeatedly
 // will not necessarily produce a sequence of non-decreasing values.
-//
+// 
 // The returned timestamps represent the number of seconds since
 // 1970-01-01T00:00:00Z, also known as [POSIX's Seconds Since the Epoch],
 // also known as [Unix Time].
-//
+// 
 // The nanoseconds field of the output is always less than 1000000000.
-//
-// [POSIX's Seconds Since the Epoch]:
-// https://pubs.opengroup.org/onlinepubs/9699919799/xrat/V4_xbd_chap04.html#tag_21_04_16
+// 
+// [POSIX's Seconds Since the Epoch]: https://pubs.opengroup.org/onlinepubs/9699919799/xrat/V4_xbd_chap04.html#tag_21_04_16
 // [Unix Time]: https://en.wikipedia.org/wiki/Unix_time
 extern void wall_clock_now(wall_clock_datetime_t *ret);
 // Query the resolution of the clock.
-//
+// 
 // The nanoseconds field of the output is always less than 1000000000.
 extern void wall_clock_get_resolution(wall_clock_datetime_t *ret);
 
 // Imported Functions from `wasi:filesystem/types@0.3.0-rc-2025-09-16`
 // Return a stream for reading from a file.
-//
+// 
 // Multiple read, write, and append streams may be active on the same open
 // file and they do not interfere with each other.
-//
+// 
 // This function returns a `stream` which provides the data received from the
 // file, and a `future` providing additional error information in case an
 // error is encountered.
-//
+// 
 // If no error is encountered, `stream.read` on the `stream` will return
 // `read-status::closed` with no `error-context` and the future resolves to
 // the value `ok`. If an error is encountered, `stream.read` on the
 // `stream` returns `read-status::closed` with an `error-context` and the future
 // resolves to `err` with an `error-code`.
-//
+// 
 // Note: This is similar to `pread` in POSIX.
-extern void filesystem_method_descriptor_read_via_stream(
-    filesystem_borrow_descriptor_t self, filesystem_filesize_t offset,
-    filesystem_tuple2_stream_u8_future_result_void_error_code_t *ret);
+extern void filesystem_method_descriptor_read_via_stream(filesystem_borrow_descriptor_t self, filesystem_filesize_t offset, filesystem_tuple2_stream_u8_future_result_void_error_code_t *ret);
 // Return a stream for writing to a file, if available.
-//
+// 
 // May fail with an error-code describing why the file cannot be written.
-//
+// 
 // It is valid to write past the end of a file; the file is extended to the
 // extent of the write, with bytes between the previous end and the start of
 // the write set to zero.
-//
+// 
 // This function returns once either full contents of the stream are
 // written or an error is encountered.
-//
+// 
 // Note: This is similar to `pwrite` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_write_via_stream(
-    filesystem_borrow_descriptor_t self, filesystem_stream_u8_t data,
-    filesystem_filesize_t offset, filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_write_via_stream(filesystem_borrow_descriptor_t self, filesystem_stream_u8_t data, filesystem_filesize_t offset, filesystem_result_void_error_code_t *result);
 // Return a stream for appending to a file, if available.
-//
+// 
 // May fail with an error-code describing why the file cannot be appended.
-//
+// 
 // This function returns once either full contents of the stream are
 // written or an error is encountered.
-//
+// 
 // Note: This is similar to `write` with `O_APPEND` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_append_via_stream(
-    filesystem_borrow_descriptor_t self, filesystem_stream_u8_t data,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_append_via_stream(filesystem_borrow_descriptor_t self, filesystem_stream_u8_t data, filesystem_result_void_error_code_t *result);
 // Provide file advisory information on a descriptor.
-//
+// 
 // This is similar to `posix_fadvise` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_advise(
-    filesystem_borrow_descriptor_t self, filesystem_filesize_t offset,
-    filesystem_filesize_t length, filesystem_advice_t advice,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_advise(filesystem_borrow_descriptor_t self, filesystem_filesize_t offset, filesystem_filesize_t length, filesystem_advice_t advice, filesystem_result_void_error_code_t *result);
 // Synchronize the data of a file to disk.
-//
+// 
 // This function succeeds with no effect if the file descriptor is not
 // opened for writing.
-//
+// 
 // Note: This is similar to `fdatasync` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_sync_data(
-    filesystem_borrow_descriptor_t self,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_sync_data(filesystem_borrow_descriptor_t self, filesystem_result_void_error_code_t *result);
 // Get flags associated with a descriptor.
-//
+// 
 // Note: This returns similar flags to `fcntl(fd, F_GETFL)` in POSIX.
-//
+// 
 // Note: This returns the value that was the `fs_flags` value returned
 // from `fdstat_get` in earlier versions of WASI.
-extern wasip3_subtask_status_t filesystem_method_descriptor_get_flags(
-    filesystem_borrow_descriptor_t self,
-    filesystem_result_descriptor_flags_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_get_flags(filesystem_borrow_descriptor_t self, filesystem_result_descriptor_flags_error_code_t *result);
 // Get the dynamic type of a descriptor.
-//
+// 
 // Note: This returns the same value as the `type` field of the `fd-stat`
 // returned by `stat`, `stat-at` and similar.
-//
+// 
 // Note: This returns similar flags to the `st_mode & S_IFMT` value provided
 // by `fstat` in POSIX.
-//
+// 
 // Note: This returns the value that was the `fs_filetype` value returned
 // from `fdstat_get` in earlier versions of WASI.
-extern wasip3_subtask_status_t filesystem_method_descriptor_get_type(
-    filesystem_borrow_descriptor_t self,
-    filesystem_result_descriptor_type_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_get_type(filesystem_borrow_descriptor_t self, filesystem_result_descriptor_type_error_code_t *result);
 // Adjust the size of an open file. If this increases the file's size, the
 // extra bytes are filled with zeros.
-//
+// 
 // Note: This was called `fd_filestat_set_size` in earlier versions of WASI.
-extern wasip3_subtask_status_t filesystem_method_descriptor_set_size(
-    filesystem_borrow_descriptor_t self, filesystem_filesize_t size,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_set_size(filesystem_borrow_descriptor_t self, filesystem_filesize_t size, filesystem_result_void_error_code_t *result);
 // Adjust the timestamps of an open file or directory.
-//
+// 
 // Note: This is similar to `futimens` in POSIX.
-//
+// 
 // Note: This was called `fd_filestat_set_times` in earlier versions of WASI.
-extern wasip3_subtask_status_t filesystem_method_descriptor_set_times(
-    filesystem_method_descriptor_set_times_args_t *args,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_set_times(filesystem_method_descriptor_set_times_args_t *args, filesystem_result_void_error_code_t *result);
 // Read directory entries from a directory.
-//
+// 
 // On filesystems where directories contain entries referring to themselves
 // and their parents, often named `.` and `..` respectively, these entries
 // are omitted.
-//
+// 
 // This always returns a new stream which starts at the beginning of the
 // directory. Multiple streams may be active on the same directory, and they
 // do not interfere with each other.
-//
+// 
 // This function returns a future, which will resolve to an error code if
 // reading full contents of the directory fails.
-extern wasip3_subtask_status_t filesystem_method_descriptor_read_directory(
-    filesystem_borrow_descriptor_t self,
-    filesystem_tuple2_stream_directory_entry_future_result_void_error_code_t
-        *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_read_directory(filesystem_borrow_descriptor_t self, filesystem_tuple2_stream_directory_entry_future_result_void_error_code_t *result);
 // Synchronize the data and metadata of a file to disk.
-//
+// 
 // This function succeeds with no effect if the file descriptor is not
 // opened for writing.
-//
+// 
 // Note: This is similar to `fsync` in POSIX.
-extern wasip3_subtask_status_t
-filesystem_method_descriptor_sync(filesystem_borrow_descriptor_t self,
-                                  filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_sync(filesystem_borrow_descriptor_t self, filesystem_result_void_error_code_t *result);
 // Create a directory.
-//
+// 
 // Note: This is similar to `mkdirat` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_create_directory_at(
-    filesystem_borrow_descriptor_t self, wasip3_string_t path,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_create_directory_at(filesystem_borrow_descriptor_t self, wasip3_string_t path, filesystem_result_void_error_code_t *result);
 // Return the attributes of an open file or directory.
-//
+// 
 // Note: This is similar to `fstat` in POSIX, except that it does not return
 // device and inode information. For testing whether two descriptors refer to
 // the same underlying filesystem object, use `is-same-object`. To obtain
 // additional data that can be used do determine whether a file has been
 // modified, use `metadata-hash`.
-//
+// 
 // Note: This was called `fd_filestat_get` in earlier versions of WASI.
-extern wasip3_subtask_status_t filesystem_method_descriptor_stat(
-    filesystem_borrow_descriptor_t self,
-    filesystem_result_descriptor_stat_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_stat(filesystem_borrow_descriptor_t self, filesystem_result_descriptor_stat_error_code_t *result);
 // Return the attributes of a file or directory.
-//
+// 
 // Note: This is similar to `fstatat` in POSIX, except that it does not
 // return device and inode information. See the `stat` description for a
 // discussion of alternatives.
-//
+// 
 // Note: This was called `path_filestat_get` in earlier versions of WASI.
-extern wasip3_subtask_status_t filesystem_method_descriptor_stat_at(
-    filesystem_borrow_descriptor_t self, filesystem_path_flags_t path_flags,
-    wasip3_string_t path,
-    filesystem_result_descriptor_stat_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_stat_at(filesystem_borrow_descriptor_t self, filesystem_path_flags_t path_flags, wasip3_string_t path, filesystem_result_descriptor_stat_error_code_t *result);
 // Adjust the timestamps of a file or directory.
-//
+// 
 // Note: This is similar to `utimensat` in POSIX.
-//
+// 
 // Note: This was called `path_filestat_set_times` in earlier versions of
 // WASI.
-extern wasip3_subtask_status_t filesystem_method_descriptor_set_times_at(
-    filesystem_method_descriptor_set_times_at_args_t *args,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_set_times_at(filesystem_method_descriptor_set_times_at_args_t *args, filesystem_result_void_error_code_t *result);
 // Create a hard link.
-//
+// 
 // Fails with `error-code::no-entry` if the old path does not exist,
 // with `error-code::exist` if the new path already exists, and
 // `error-code::not-permitted` if the old path is not a file.
-//
+// 
 // Note: This is similar to `linkat` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_link_at(
-    filesystem_method_descriptor_link_at_args_t *args,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_link_at(filesystem_method_descriptor_link_at_args_t *args, filesystem_result_void_error_code_t *result);
 // Open a file or directory.
-//
+// 
 // If `flags` contains `descriptor-flags::mutate-directory`, and the base
 // descriptor doesn't have `descriptor-flags::mutate-directory` set,
 // `open-at` fails with `error-code::read-only`.
-//
+// 
 // If `flags` contains `write` or `mutate-directory`, or `open-flags`
 // contains `truncate` or `create`, and the base descriptor doesn't have
 // `descriptor-flags::mutate-directory` set, `open-at` fails with
 // `error-code::read-only`.
-//
+// 
 // Note: This is similar to `openat` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_open_at(
-    filesystem_method_descriptor_open_at_args_t *args,
-    filesystem_result_own_descriptor_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_open_at(filesystem_method_descriptor_open_at_args_t *args, filesystem_result_own_descriptor_error_code_t *result);
 // Read the contents of a symbolic link.
-//
+// 
 // If the contents contain an absolute or rooted path in the underlying
 // filesystem, this function fails with `error-code::not-permitted`.
-//
+// 
 // Note: This is similar to `readlinkat` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_readlink_at(
-    filesystem_borrow_descriptor_t self, wasip3_string_t path,
-    filesystem_result_string_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_readlink_at(filesystem_borrow_descriptor_t self, wasip3_string_t path, filesystem_result_string_error_code_t *result);
 // Remove a directory.
-//
+// 
 // Return `error-code::not-empty` if the directory is not empty.
-//
+// 
 // Note: This is similar to `unlinkat(fd, path, AT_REMOVEDIR)` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_remove_directory_at(
-    filesystem_borrow_descriptor_t self, wasip3_string_t path,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_remove_directory_at(filesystem_borrow_descriptor_t self, wasip3_string_t path, filesystem_result_void_error_code_t *result);
 // Rename a filesystem object.
-//
+// 
 // Note: This is similar to `renameat` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_rename_at(
-    filesystem_method_descriptor_rename_at_args_t *args,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_rename_at(filesystem_method_descriptor_rename_at_args_t *args, filesystem_result_void_error_code_t *result);
 // Create a symbolic link (also known as a "symlink").
-//
+// 
 // If `old-path` starts with `/`, the function fails with
 // `error-code::not-permitted`.
-//
+// 
 // Note: This is similar to `symlinkat` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_symlink_at(
-    filesystem_method_descriptor_symlink_at_args_t *args,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_symlink_at(filesystem_method_descriptor_symlink_at_args_t *args, filesystem_result_void_error_code_t *result);
 // Unlink a filesystem object that is not a directory.
-//
+// 
 // Return `error-code::is-directory` if the path refers to a directory.
 // Note: This is similar to `unlinkat(fd, path, 0)` in POSIX.
-extern wasip3_subtask_status_t filesystem_method_descriptor_unlink_file_at(
-    filesystem_borrow_descriptor_t self, wasip3_string_t path,
-    filesystem_result_void_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_unlink_file_at(filesystem_borrow_descriptor_t self, wasip3_string_t path, filesystem_result_void_error_code_t *result);
 // Test whether two descriptors refer to the same filesystem object.
-//
+// 
 // In POSIX, this corresponds to testing whether the two descriptors have the
 // same device (`st_dev`) and inode (`st_ino` or `d_ino`) numbers.
 // wasi-filesystem does not expose device and inode numbers, so this function
 // may be used instead.
-extern wasip3_subtask_status_t filesystem_method_descriptor_is_same_object(
-    filesystem_borrow_descriptor_t self, filesystem_borrow_descriptor_t other,
-    bool *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_is_same_object(filesystem_borrow_descriptor_t self, filesystem_borrow_descriptor_t other, bool *result);
 // Return a hash of the metadata associated with a filesystem object referred
 // to by a descriptor.
-//
+// 
 // This returns a hash of the last-modification timestamp and file size, and
 // may also include the inode number, device number, birth timestamp, and
 // other metadata fields that may change when the file is modified or
 // replaced. It may also include a secret value chosen by the
 // implementation and not otherwise exposed.
-//
+// 
 // Implementations are encouraged to provide the following properties:
-//
+// 
 //  - If the file is not modified or replaced, the computed hash value should
 //    usually not change.
 //  - If the object is modified or replaced, the computed hash value should
 //    usually change.
 //  - The inputs to the hash should not be easily computable from the
 //    computed hash.
-//
+// 
 // However, none of these is required.
-extern wasip3_subtask_status_t filesystem_method_descriptor_metadata_hash(
-    filesystem_borrow_descriptor_t self,
-    filesystem_result_metadata_hash_value_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_metadata_hash(filesystem_borrow_descriptor_t self, filesystem_result_metadata_hash_value_error_code_t *result);
 // Return a hash of the metadata associated with a filesystem object referred
 // to by a directory descriptor and a relative path.
-//
+// 
 // This performs the same hash computation as `metadata-hash`.
-extern wasip3_subtask_status_t filesystem_method_descriptor_metadata_hash_at(
-    filesystem_borrow_descriptor_t self, filesystem_path_flags_t path_flags,
-    wasip3_string_t path,
-    filesystem_result_metadata_hash_value_error_code_t *result);
+extern wasip3_subtask_status_t filesystem_method_descriptor_metadata_hash_at(filesystem_borrow_descriptor_t self, filesystem_path_flags_t path_flags, wasip3_string_t path, filesystem_result_metadata_hash_value_error_code_t *result);
 
 // Imported Functions from `wasi:filesystem/preopens@0.3.0-rc-2025-09-16`
 // Return the set of preopened directories, and their paths.
-extern void filesystem_preopens_get_directories(
-    filesystem_preopens_list_tuple2_own_descriptor_string_t *ret);
+extern void filesystem_preopens_get_directories(filesystem_preopens_list_tuple2_own_descriptor_string_t *ret);
 
 // Imported Functions from `wasi:sockets/types@0.3.0-rc-2025-09-16`
 // Create a new TCP socket.
-//
+// 
 // Similar to `socket(AF_INET or AF_INET6, SOCK_STREAM, IPPROTO_TCP)` in POSIX.
-// On IPv6 sockets, IPV6_V6ONLY is enabled by default and can't be configured
-// otherwise.
-//
+// On IPv6 sockets, IPV6_V6ONLY is enabled by default and can't be configured otherwise.
+// 
 // Unlike POSIX, WASI sockets have no notion of a socket-level
 // `O_NONBLOCK` flag. Instead they fully rely on the Component Model's
 // async support.
-//
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html>
 // - <https://man7.org/linux/man-pages/man2/socket.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasocketw>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasocketw>
 // - <https://man.freebsd.org/cgi/man.cgi?query=socket&sektion=2>
-extern bool
-sockets_static_tcp_socket_create(sockets_ip_address_family_t address_family,
-                                 sockets_own_tcp_socket_t *ret,
-                                 sockets_error_code_t *err);
+extern bool sockets_static_tcp_socket_create(sockets_ip_address_family_t address_family, sockets_own_tcp_socket_t *ret, sockets_error_code_t *err);
 // Bind the socket to the provided IP address and port.
-//
-// If the IP address is zero (`0.0.0.0` in IPv4, `::` in IPv6), it is left to
-// the implementation to decide which network interface(s) to bind to. If the
-// TCP/UDP port is zero, the socket will be bound to a random free port.
-//
+// 
+// If the IP address is zero (`0.0.0.0` in IPv4, `::` in IPv6), it is left to the implementation to decide which
+// network interface(s) to bind to.
+// If the TCP/UDP port is zero, the socket will be bound to a random free port.
+// 
 // Bind can be attempted multiple times on the same socket, even with
 // different arguments on each iteration. But never concurrently and
 // only as long as the previous bind failed. Once a bind succeeds, the
 // binding can't be changed anymore.
-//
+// 
 // # Typical errors
-// - `invalid-argument`:          The `local-address` has the wrong address
-// family. (EAFNOSUPPORT, EFAULT on Windows)
-// - `invalid-argument`:          `local-address` is not a unicast address.
-// (EINVAL)
-// - `invalid-argument`:          `local-address` is an IPv4-mapped IPv6
-// address. (EINVAL)
+// - `invalid-argument`:          The `local-address` has the wrong address family. (EAFNOSUPPORT, EFAULT on Windows)
+// - `invalid-argument`:          `local-address` is not a unicast address. (EINVAL)
+// - `invalid-argument`:          `local-address` is an IPv4-mapped IPv6 address. (EINVAL)
 // - `invalid-state`:             The socket is already bound. (EINVAL)
-// - `address-in-use`:            No ephemeral ports available. (EADDRINUSE,
-// ENOBUFS on Windows)
+// - `address-in-use`:            No ephemeral ports available. (EADDRINUSE, ENOBUFS on Windows)
 // - `address-in-use`:            Address is already in use. (EADDRINUSE)
-// - `address-not-bindable`:      `local-address` is not an address that can be
-// bound to. (EADDRNOTAVAIL)
-//
+// - `address-not-bindable`:      `local-address` is not an address that can be bound to. (EADDRNOTAVAIL)
+// 
 // # Implementors note
-// When binding to a non-zero port, this bind operation shouldn't be affected by
-// the TIME_WAIT state of a recently closed socket on the same local address. In
-// practice this means that the SO_REUSEADDR socket option should be set
-// implicitly on all platforms, except on Windows where this is the default
-// behavior and SO_REUSEADDR performs something different entirely.
-//
+// When binding to a non-zero port, this bind operation shouldn't be affected by the TIME_WAIT
+// state of a recently closed socket on the same local address. In practice this means that the SO_REUSEADDR
+// socket option should be set implicitly on all platforms, except on Windows where this is the default behavior
+// and SO_REUSEADDR performs something different entirely.
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html>
 // - <https://man7.org/linux/man-pages/man2/bind.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind>
 // - <https://man.freebsd.org/cgi/man.cgi?query=bind&sektion=2&format=html>
-extern bool
-sockets_method_tcp_socket_bind(sockets_borrow_tcp_socket_t self,
-                               sockets_ip_socket_address_t *local_address,
-                               sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_bind(sockets_borrow_tcp_socket_t self, sockets_ip_socket_address_t *local_address, sockets_error_code_t *err);
 // Connect to a remote endpoint.
-//
-// On success, the socket is transitioned into the `connected` state and this
-// function returns a connection resource.
-//
+// 
+// On success, the socket is transitioned into the `connected` state and this function returns a connection resource.
+// 
 // After a failed connection attempt, the socket will be in the `closed`
 // state and the only valid action left is to `drop` the socket. A single
 // socket can not be used to connect more than once.
-//
+// 
 // # Typical errors
-// - `invalid-argument`:          The `remote-address` has the wrong address
-// family. (EAFNOSUPPORT)
-// - `invalid-argument`:          `remote-address` is not a unicast address.
-// (EINVAL, ENETUNREACH on Linux, EAFNOSUPPORT on MacOS)
-// - `invalid-argument`:          `remote-address` is an IPv4-mapped IPv6
-// address. (EINVAL, EADDRNOTAVAIL on Illumos)
-// - `invalid-argument`:          The IP address in `remote-address` is set to
-// INADDR_ANY (`0.0.0.0` / `::`). (EADDRNOTAVAIL on Windows)
-// - `invalid-argument`:          The port in `remote-address` is set to 0.
-// (EADDRNOTAVAIL on Windows)
-// - `invalid-state`:             The socket is already in the `connecting`
-// state. (EALREADY)
-// - `invalid-state`:             The socket is already in the `connected`
-// state. (EISCONN)
-// - `invalid-state`:             The socket is already in the `listening`
-// state. (EOPNOTSUPP, EINVAL on Windows)
+// - `invalid-argument`:          The `remote-address` has the wrong address family. (EAFNOSUPPORT)
+// - `invalid-argument`:          `remote-address` is not a unicast address. (EINVAL, ENETUNREACH on Linux, EAFNOSUPPORT on MacOS)
+// - `invalid-argument`:          `remote-address` is an IPv4-mapped IPv6 address. (EINVAL, EADDRNOTAVAIL on Illumos)
+// - `invalid-argument`:          The IP address in `remote-address` is set to INADDR_ANY (`0.0.0.0` / `::`). (EADDRNOTAVAIL on Windows)
+// - `invalid-argument`:          The port in `remote-address` is set to 0. (EADDRNOTAVAIL on Windows)
+// - `invalid-state`:             The socket is already in the `connecting` state. (EALREADY)
+// - `invalid-state`:             The socket is already in the `connected` state. (EISCONN)
+// - `invalid-state`:             The socket is already in the `listening` state. (EOPNOTSUPP, EINVAL on Windows)
 // - `timeout`:                   Connection timed out. (ETIMEDOUT)
-// - `connection-refused`:        The connection was forcefully rejected.
-// (ECONNREFUSED)
+// - `connection-refused`:        The connection was forcefully rejected. (ECONNREFUSED)
 // - `connection-reset`:          The connection was reset. (ECONNRESET)
 // - `connection-aborted`:        The connection was aborted. (ECONNABORTED)
-// - `remote-unreachable`:        The remote address is not reachable.
-// (EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
-// - `address-in-use`:            Tried to perform an implicit bind, but there
-// were no ephemeral ports available. (EADDRINUSE, EADDRNOTAVAIL on Linux,
-// EAGAIN on BSD)
-//
+// - `remote-unreachable`:        The remote address is not reachable. (EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
+// - `address-in-use`:            Tried to perform an implicit bind, but there were no ephemeral ports available. (EADDRINUSE, EADDRNOTAVAIL on Linux, EAGAIN on BSD)
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html>
 // - <https://man7.org/linux/man-pages/man2/connect.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect>
 // - <https://man.freebsd.org/cgi/man.cgi?connect>
-extern wasip3_subtask_status_t sockets_method_tcp_socket_connect(
-    sockets_method_tcp_socket_connect_args_t *args,
-    sockets_result_void_error_code_t *result);
+extern wasip3_subtask_status_t sockets_method_tcp_socket_connect(sockets_method_tcp_socket_connect_args_t *args, sockets_result_void_error_code_t *result);
 // Start listening and return a stream of new inbound connections.
-//
+// 
 // Transitions the socket into the `listening` state. This can be called
 // at most once per socket.
-//
+// 
 // If the socket is not already explicitly bound, this function will
 // implicitly bind the socket to a random free port.
-//
+// 
 // Normally, the returned sockets are bound, in the `connected` state
 // and immediately ready for I/O. Though, depending on exact timing and
 // circumstances, a newly accepted connection may already be `closed`
 // by the time the server attempts to perform its first I/O on it. This
 // is true regardless of whether the WASI implementation uses
 // "synthesized" sockets or not (see Implementors Notes below).
-//
+// 
 // The following properties are inherited from the listener socket:
 // - `address-family`
 // - `keep-alive-enabled`
@@ -1431,21 +1328,18 @@ extern wasip3_subtask_status_t sockets_method_tcp_socket_connect(
 // - `hop-limit`
 // - `receive-buffer-size`
 // - `send-buffer-size`
-//
+// 
 // # Typical errors
-// - `invalid-state`:             The socket is already in the `connected`
-// state. (EISCONN, EINVAL on BSD)
-// - `invalid-state`:             The socket is already in the `listening`
-// state.
-// - `address-in-use`:            Tried to perform an implicit bind, but there
-// were no ephemeral ports available. (EADDRINUSE)
-//
+// - `invalid-state`:             The socket is already in the `connected` state. (EISCONN, EINVAL on BSD)
+// - `invalid-state`:             The socket is already in the `listening` state.
+// - `address-in-use`:            Tried to perform an implicit bind, but there were no ephemeral ports available. (EADDRINUSE)
+// 
 // # Implementors note
 // This method returns a single perpetual stream that should only close
 // on fatal errors (if any). Yet, the POSIX' `accept` function may also
 // return transient errors (e.g. ECONNABORTED). The exact details differ
 // per operation system. For example, the Linux manual mentions:
-//
+// 
 // > Linux accept() passes already-pending network errors on the new
 // > socket as an error code from accept(). This behavior differs from
 // > other BSD socket implementations. For reliable operation the
@@ -1454,615 +1348,477 @@ extern wasip3_subtask_status_t sockets_method_tcp_socket_connect(
 // > In the case of TCP/IP, these are ENETDOWN, EPROTO, ENOPROTOOPT,
 // > EHOSTDOWN, ENONET, EHOSTUNREACH, EOPNOTSUPP, and ENETUNREACH.
 // Source: https://man7.org/linux/man-pages/man2/accept.2.html
-//
+// 
 // WASI implementations have two options to handle this:
 // - Optionally log it and then skip over non-fatal errors returned by
 //   `accept`. Guest code never gets to see these failures. Or:
 // - Synthesize a `tcp-socket` resource that exposes the error when
 //   attempting to send or receive on it. Guest code then sees these
 //   failures as regular I/O errors.
-//
+// 
 // In either case, the stream returned by this `listen` method remains
 // operational.
-//
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/listen.html>
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/accept.html>
 // - <https://man7.org/linux/man-pages/man2/listen.2.html>
 // - <https://man7.org/linux/man-pages/man2/accept.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-listen>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-accept>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-listen>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-accept>
 // - <https://man.freebsd.org/cgi/man.cgi?query=listen&sektion=2>
 // - <https://man.freebsd.org/cgi/man.cgi?query=accept&sektion=2>
-extern bool
-sockets_method_tcp_socket_listen(sockets_borrow_tcp_socket_t self,
-                                 sockets_stream_own_tcp_socket_t *ret,
-                                 sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_listen(sockets_borrow_tcp_socket_t self, sockets_stream_own_tcp_socket_t *ret, sockets_error_code_t *err);
 // Transmit data to peer.
-//
+// 
 // The caller should close the stream when it has no more data to send
 // to the peer. Under normal circumstances this will cause a FIN packet
 // to be sent out. Closing the stream is equivalent to calling
 // `shutdown(SHUT_WR)` in POSIX.
-//
+// 
 // This function may be called at most once and returns once the full
 // contents of the stream are transmitted or an error is encountered.
-//
+// 
 // # Typical errors
-// - `invalid-state`:             The socket is not in the `connected` state.
-// (ENOTCONN)
+// - `invalid-state`:             The socket is not in the `connected` state. (ENOTCONN)
 // - `connection-reset`:          The connection was reset. (ECONNRESET)
-// - `remote-unreachable`:        The remote address is not reachable.
-// (EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
-//
+// - `remote-unreachable`:        The remote address is not reachable. (EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
+// 
 //  # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/send.html>
 // - <https://man7.org/linux/man-pages/man2/send.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-send>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-send>
 // - <https://man.freebsd.org/cgi/man.cgi?query=send&sektion=2>
-extern wasip3_subtask_status_t
-sockets_method_tcp_socket_send(sockets_borrow_tcp_socket_t self,
-                               sockets_stream_u8_t data,
-                               sockets_result_void_error_code_t *result);
+extern wasip3_subtask_status_t sockets_method_tcp_socket_send(sockets_borrow_tcp_socket_t self, sockets_stream_u8_t data, sockets_result_void_error_code_t *result);
 // Read data from peer.
-//
+// 
 // This function returns a `stream` which provides the data received from the
 // socket, and a `future` providing additional error information in case the
 // socket is closed abnormally.
-//
+// 
 // If the socket is closed normally, `stream.read` on the `stream` will return
 // `read-status::closed` with no `error-context` and the future resolves to
 // the value `ok`. If the socket is closed abnormally, `stream.read` on the
 // `stream` returns `read-status::closed` with an `error-context` and the future
 // resolves to `err` with an `error-code`.
-//
+// 
 // `receive` is meant to be called only once per socket. If it is called more
 // than once, the subsequent calls return a new `stream` that fails as if it
 // were closed abnormally.
-//
+// 
 // If the caller is not expecting to receive any data from the peer,
 // they may drop the stream. Any data still in the receive queue
 // will be discarded. This is equivalent to calling `shutdown(SHUT_RD)`
 // in POSIX.
-//
+// 
 // # Typical errors
-// - `invalid-state`:             The socket is not in the `connected` state.
-// (ENOTCONN)
+// - `invalid-state`:             The socket is not in the `connected` state. (ENOTCONN)
 // - `connection-reset`:          The connection was reset. (ECONNRESET)
-// - `remote-unreachable`:        The remote address is not reachable.
-// (EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
-//
+// - `remote-unreachable`:        The remote address is not reachable. (EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/recv.html>
 // - <https://man7.org/linux/man-pages/man2/recv.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recv>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recv>
 // - <https://man.freebsd.org/cgi/man.cgi?query=recv&sektion=2>
-extern void sockets_method_tcp_socket_receive(
-    sockets_borrow_tcp_socket_t self,
-    sockets_tuple2_stream_u8_future_result_void_error_code_t *ret);
+extern void sockets_method_tcp_socket_receive(sockets_borrow_tcp_socket_t self, sockets_tuple2_stream_u8_future_result_void_error_code_t *ret);
 // Get the bound local address.
-//
+// 
 // POSIX mentions:
 // > If the socket has not been bound to a local name, the value
 // > stored in the object pointed to by `address` is unspecified.
-//
-// WASI is stricter and requires `get-local-address` to return `invalid-state`
-// when the socket hasn't been bound yet.
-//
+// 
+// WASI is stricter and requires `get-local-address` to return `invalid-state` when the socket hasn't been bound yet.
+// 
 // # Typical errors
 // - `invalid-state`: The socket is not bound to any local address.
-//
+// 
 // # References
-// -
-// <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html>
+// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html>
 // - <https://man7.org/linux/man-pages/man2/getsockname.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getsockname>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getsockname>
 // - <https://man.freebsd.org/cgi/man.cgi?getsockname>
-extern bool
-sockets_method_tcp_socket_get_local_address(sockets_borrow_tcp_socket_t self,
-                                            sockets_ip_socket_address_t *ret,
-                                            sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_get_local_address(sockets_borrow_tcp_socket_t self, sockets_ip_socket_address_t *ret, sockets_error_code_t *err);
 // Get the remote address.
-//
+// 
 // # Typical errors
-// - `invalid-state`: The socket is not connected to a remote address.
-// (ENOTCONN)
-//
+// - `invalid-state`: The socket is not connected to a remote address. (ENOTCONN)
+// 
 // # References
-// -
-// <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html>
+// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html>
 // - <https://man7.org/linux/man-pages/man2/getpeername.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getpeername>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getpeername>
 // - <https://man.freebsd.org/cgi/man.cgi?query=getpeername&sektion=2&n=1>
-extern bool
-sockets_method_tcp_socket_get_remote_address(sockets_borrow_tcp_socket_t self,
-                                             sockets_ip_socket_address_t *ret,
-                                             sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_get_remote_address(sockets_borrow_tcp_socket_t self, sockets_ip_socket_address_t *ret, sockets_error_code_t *err);
 // Whether the socket is in the `listening` state.
-//
+// 
 // Equivalent to the SO_ACCEPTCONN socket option.
-extern bool
-sockets_method_tcp_socket_get_is_listening(sockets_borrow_tcp_socket_t self);
+extern bool sockets_method_tcp_socket_get_is_listening(sockets_borrow_tcp_socket_t self);
 // Whether this is a IPv4 or IPv6 socket.
-//
+// 
 // This is the value passed to the constructor.
-//
+// 
 // Equivalent to the SO_DOMAIN socket option.
-extern sockets_ip_address_family_t
-sockets_method_tcp_socket_get_address_family(sockets_borrow_tcp_socket_t self);
+extern sockets_ip_address_family_t sockets_method_tcp_socket_get_address_family(sockets_borrow_tcp_socket_t self);
 // Hints the desired listen queue size. Implementations are free to ignore this.
-//
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-// Any other value will never cause an error, but it might be silently clamped
-// and/or rounded.
-//
+// Any other value will never cause an error, but it might be silently clamped and/or rounded.
+// 
 // # Typical errors
-// - `not-supported`:        (set) The platform does not support changing the
-// backlog size after the initial listen.
+// - `not-supported`:        (set) The platform does not support changing the backlog size after the initial listen.
 // - `invalid-argument`:     (set) The provided value was 0.
-// - `invalid-state`:        (set) The socket is in the `connecting` or
-// `connected` state.
-extern bool sockets_method_tcp_socket_set_listen_backlog_size(
-    sockets_borrow_tcp_socket_t self, uint64_t value,
-    sockets_error_code_t *err);
+// - `invalid-state`:        (set) The socket is in the `connecting` or `connected` state.
+extern bool sockets_method_tcp_socket_set_listen_backlog_size(sockets_borrow_tcp_socket_t self, uint64_t value, sockets_error_code_t *err);
 // Enables or disables keepalive.
-//
+// 
 // The keepalive behavior can be adjusted using:
 // - `keep-alive-idle-time`
 // - `keep-alive-interval`
 // - `keep-alive-count`
-// These properties can be configured while `keep-alive-enabled` is false, but
-// only come into effect when `keep-alive-enabled` is true.
-//
+// These properties can be configured while `keep-alive-enabled` is false, but only come into effect when `keep-alive-enabled` is true.
+// 
 // Equivalent to the SO_KEEPALIVE socket option.
-extern bool sockets_method_tcp_socket_get_keep_alive_enabled(
-    sockets_borrow_tcp_socket_t self, bool *ret, sockets_error_code_t *err);
-extern bool sockets_method_tcp_socket_set_keep_alive_enabled(
-    sockets_borrow_tcp_socket_t self, bool value, sockets_error_code_t *err);
-// Amount of time the connection has to be idle before TCP starts sending
-// keepalive packets.
-//
+extern bool sockets_method_tcp_socket_get_keep_alive_enabled(sockets_borrow_tcp_socket_t self, bool *ret, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_set_keep_alive_enabled(sockets_borrow_tcp_socket_t self, bool value, sockets_error_code_t *err);
+// Amount of time the connection has to be idle before TCP starts sending keepalive packets.
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-// Any other value will never cause an error, but it might be silently clamped
-// and/or rounded. I.e. after setting a value, reading the same setting back may
-// return a different value.
-//
+// Any other value will never cause an error, but it might be silently clamped and/or rounded.
+// I.e. after setting a value, reading the same setting back may return a different value.
+// 
 // Equivalent to the TCP_KEEPIDLE socket option. (TCP_KEEPALIVE on MacOS)
-//
+// 
 // # Typical errors
 // - `invalid-argument`:     (set) The provided value was 0.
-extern bool sockets_method_tcp_socket_get_keep_alive_idle_time(
-    sockets_borrow_tcp_socket_t self, sockets_duration_t *ret,
-    sockets_error_code_t *err);
-extern bool sockets_method_tcp_socket_set_keep_alive_idle_time(
-    sockets_borrow_tcp_socket_t self, sockets_duration_t value,
-    sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_get_keep_alive_idle_time(sockets_borrow_tcp_socket_t self, sockets_duration_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_set_keep_alive_idle_time(sockets_borrow_tcp_socket_t self, sockets_duration_t value, sockets_error_code_t *err);
 // The time between keepalive packets.
-//
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-// Any other value will never cause an error, but it might be silently clamped
-// and/or rounded. I.e. after setting a value, reading the same setting back may
-// return a different value.
-//
+// Any other value will never cause an error, but it might be silently clamped and/or rounded.
+// I.e. after setting a value, reading the same setting back may return a different value.
+// 
 // Equivalent to the TCP_KEEPINTVL socket option.
-//
+// 
 // # Typical errors
 // - `invalid-argument`:     (set) The provided value was 0.
-extern bool sockets_method_tcp_socket_get_keep_alive_interval(
-    sockets_borrow_tcp_socket_t self, sockets_duration_t *ret,
-    sockets_error_code_t *err);
-extern bool sockets_method_tcp_socket_set_keep_alive_interval(
-    sockets_borrow_tcp_socket_t self, sockets_duration_t value,
-    sockets_error_code_t *err);
-// The maximum amount of keepalive packets TCP should send before aborting the
-// connection.
-//
+extern bool sockets_method_tcp_socket_get_keep_alive_interval(sockets_borrow_tcp_socket_t self, sockets_duration_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_set_keep_alive_interval(sockets_borrow_tcp_socket_t self, sockets_duration_t value, sockets_error_code_t *err);
+// The maximum amount of keepalive packets TCP should send before aborting the connection.
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-// Any other value will never cause an error, but it might be silently clamped
-// and/or rounded. I.e. after setting a value, reading the same setting back may
-// return a different value.
-//
+// Any other value will never cause an error, but it might be silently clamped and/or rounded.
+// I.e. after setting a value, reading the same setting back may return a different value.
+// 
 // Equivalent to the TCP_KEEPCNT socket option.
-//
+// 
 // # Typical errors
 // - `invalid-argument`:     (set) The provided value was 0.
-extern bool sockets_method_tcp_socket_get_keep_alive_count(
-    sockets_borrow_tcp_socket_t self, uint32_t *ret, sockets_error_code_t *err);
-extern bool
-sockets_method_tcp_socket_set_keep_alive_count(sockets_borrow_tcp_socket_t self,
-                                               uint32_t value,
-                                               sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_get_keep_alive_count(sockets_borrow_tcp_socket_t self, uint32_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_set_keep_alive_count(sockets_borrow_tcp_socket_t self, uint32_t value, sockets_error_code_t *err);
 // Equivalent to the IP_TTL & IPV6_UNICAST_HOPS socket options.
-//
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-//
+// 
 // # Typical errors
 // - `invalid-argument`:     (set) The TTL value must be 1 or higher.
-extern bool sockets_method_tcp_socket_get_hop_limit(
-    sockets_borrow_tcp_socket_t self, uint8_t *ret, sockets_error_code_t *err);
-extern bool sockets_method_tcp_socket_set_hop_limit(
-    sockets_borrow_tcp_socket_t self, uint8_t value, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_get_hop_limit(sockets_borrow_tcp_socket_t self, uint8_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_set_hop_limit(sockets_borrow_tcp_socket_t self, uint8_t value, sockets_error_code_t *err);
 // The kernel buffer space reserved for sends/receives on this socket.
-//
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-// Any other value will never cause an error, but it might be silently clamped
-// and/or rounded. I.e. after setting a value, reading the same setting back may
-// return a different value.
-//
+// Any other value will never cause an error, but it might be silently clamped and/or rounded.
+// I.e. after setting a value, reading the same setting back may return a different value.
+// 
 // Equivalent to the SO_RCVBUF and SO_SNDBUF socket options.
-//
+// 
 // # Typical errors
 // - `invalid-argument`:     (set) The provided value was 0.
-extern bool sockets_method_tcp_socket_get_receive_buffer_size(
-    sockets_borrow_tcp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
-extern bool sockets_method_tcp_socket_set_receive_buffer_size(
-    sockets_borrow_tcp_socket_t self, uint64_t value,
-    sockets_error_code_t *err);
-extern bool sockets_method_tcp_socket_get_send_buffer_size(
-    sockets_borrow_tcp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
-extern bool
-sockets_method_tcp_socket_set_send_buffer_size(sockets_borrow_tcp_socket_t self,
-                                               uint64_t value,
-                                               sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_get_receive_buffer_size(sockets_borrow_tcp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_set_receive_buffer_size(sockets_borrow_tcp_socket_t self, uint64_t value, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_get_send_buffer_size(sockets_borrow_tcp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_tcp_socket_set_send_buffer_size(sockets_borrow_tcp_socket_t self, uint64_t value, sockets_error_code_t *err);
 // Create a new UDP socket.
-//
+// 
 // Similar to `socket(AF_INET or AF_INET6, SOCK_DGRAM, IPPROTO_UDP)` in POSIX.
-// On IPv6 sockets, IPV6_V6ONLY is enabled by default and can't be configured
-// otherwise.
-//
+// On IPv6 sockets, IPV6_V6ONLY is enabled by default and can't be configured otherwise.
+// 
 // Unlike POSIX, WASI sockets have no notion of a socket-level
 // `O_NONBLOCK` flag. Instead they fully rely on the Component Model's
 // async support.
-//
+// 
 // # References:
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/socket.html>
 // - <https://man7.org/linux/man-pages/man2/socket.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasocketw>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasocketw>
 // - <https://man.freebsd.org/cgi/man.cgi?query=socket&sektion=2>
-extern bool
-sockets_static_udp_socket_create(sockets_ip_address_family_t address_family,
-                                 sockets_own_udp_socket_t *ret,
-                                 sockets_error_code_t *err);
+extern bool sockets_static_udp_socket_create(sockets_ip_address_family_t address_family, sockets_own_udp_socket_t *ret, sockets_error_code_t *err);
 // Bind the socket to the provided IP address and port.
-//
-// If the IP address is zero (`0.0.0.0` in IPv4, `::` in IPv6), it is left to
-// the implementation to decide which network interface(s) to bind to. If the
-// port is zero, the socket will be bound to a random free port.
-//
+// 
+// If the IP address is zero (`0.0.0.0` in IPv4, `::` in IPv6), it is left to the implementation to decide which
+// network interface(s) to bind to.
+// If the port is zero, the socket will be bound to a random free port.
+// 
 // # Typical errors
-// - `invalid-argument`:          The `local-address` has the wrong address
-// family. (EAFNOSUPPORT, EFAULT on Windows)
+// - `invalid-argument`:          The `local-address` has the wrong address family. (EAFNOSUPPORT, EFAULT on Windows)
 // - `invalid-state`:             The socket is already bound. (EINVAL)
-// - `address-in-use`:            No ephemeral ports available. (EADDRINUSE,
-// ENOBUFS on Windows)
+// - `address-in-use`:            No ephemeral ports available. (EADDRINUSE, ENOBUFS on Windows)
 // - `address-in-use`:            Address is already in use. (EADDRINUSE)
-// - `address-not-bindable`:      `local-address` is not an address that can be
-// bound to. (EADDRNOTAVAIL)
-//
+// - `address-not-bindable`:      `local-address` is not an address that can be bound to. (EADDRNOTAVAIL)
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/bind.html>
 // - <https://man7.org/linux/man-pages/man2/bind.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-bind>
 // - <https://man.freebsd.org/cgi/man.cgi?query=bind&sektion=2&format=html>
-extern bool
-sockets_method_udp_socket_bind(sockets_borrow_udp_socket_t self,
-                               sockets_ip_socket_address_t *local_address,
-                               sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_bind(sockets_borrow_udp_socket_t self, sockets_ip_socket_address_t *local_address, sockets_error_code_t *err);
 // Associate this socket with a specific peer address.
-//
+// 
 // On success, the `remote-address` of the socket is updated.
 // The `local-address` may be updated as well, based on the best network
 // path to `remote-address`. If the socket was not already explicitly
 // bound, this function will implicitly bind the socket to a random
 // free port.
-//
+// 
 // When a UDP socket is "connected", the `send` and `receive` methods
 // are limited to communicating with that peer only:
 // - `send` can only be used to send to this destination.
-// - `receive` will only return datagrams sent from the provided
-// `remote-address`.
-//
+// - `receive` will only return datagrams sent from the provided `remote-address`.
+// 
 // The name "connect" was kept to align with the existing POSIX
 // terminology. Other than that, this function only changes the local
 // socket configuration and does not generate any network traffic.
 // The peer is not aware of this "connection".
-//
+// 
 // This method may be called multiple times on the same socket to change
 // its association, but only the most recent one will be effective.
-//
+// 
 // # Typical errors
-// - `invalid-argument`:          The `remote-address` has the wrong address
-// family. (EAFNOSUPPORT)
-// - `invalid-argument`:          The IP address in `remote-address` is set to
-// INADDR_ANY (`0.0.0.0` / `::`). (EDESTADDRREQ, EADDRNOTAVAIL)
-// - `invalid-argument`:          The port in `remote-address` is set to 0.
-// (EDESTADDRREQ, EADDRNOTAVAIL)
-// - `address-in-use`:            Tried to perform an implicit bind, but there
-// were no ephemeral ports available. (EADDRINUSE, EADDRNOTAVAIL on Linux,
-// EAGAIN on BSD)
-//
+// - `invalid-argument`:          The `remote-address` has the wrong address family. (EAFNOSUPPORT)
+// - `invalid-argument`:          The IP address in `remote-address` is set to INADDR_ANY (`0.0.0.0` / `::`). (EDESTADDRREQ, EADDRNOTAVAIL)
+// - `invalid-argument`:          The port in `remote-address` is set to 0. (EDESTADDRREQ, EADDRNOTAVAIL)
+// - `address-in-use`:            Tried to perform an implicit bind, but there were no ephemeral ports available. (EADDRINUSE, EADDRNOTAVAIL on Linux, EAGAIN on BSD)
+// 
 // # Implementors note
 // If the socket is already connected, some platforms (e.g. Linux)
 // require a disconnect before connecting to a different peer address.
-//
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html>
 // - <https://man7.org/linux/man-pages/man2/connect.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect>
 // - <https://man.freebsd.org/cgi/man.cgi?connect>
-extern bool
-sockets_method_udp_socket_connect(sockets_borrow_udp_socket_t self,
-                                  sockets_ip_socket_address_t *remote_address,
-                                  sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_connect(sockets_borrow_udp_socket_t self, sockets_ip_socket_address_t *remote_address, sockets_error_code_t *err);
 // Dissociate this socket from its peer address.
-//
+// 
 // After calling this method, `send` & `receive` are free to communicate
 // with any address again.
-//
-// The POSIX equivalent of this is calling `connect` with an `AF_UNSPEC`
-// address.
-//
+// 
+// The POSIX equivalent of this is calling `connect` with an `AF_UNSPEC` address.
+// 
 // # Typical errors
 // - `invalid-state`:           The socket is not connected.
-//
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/connect.html>
 // - <https://man7.org/linux/man-pages/man2/connect.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect>
 // - <https://man.freebsd.org/cgi/man.cgi?connect>
-extern bool
-sockets_method_udp_socket_disconnect(sockets_borrow_udp_socket_t self,
-                                     sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_disconnect(sockets_borrow_udp_socket_t self, sockets_error_code_t *err);
 // Send a message on the socket to a particular peer.
-//
+// 
 // If the socket is connected, the peer address may be left empty. In
 // that case this is equivalent to `send` in POSIX. Otherwise it is
 // equivalent to `sendto`.
-//
+// 
 // Additionally, if the socket is connected, a `remote-address` argument
 // _may_ be provided but then it must be identical to the address
 // passed to `connect`.
-//
+// 
 // Implementations may trap if the `data` length exceeds 64 KiB.
-//
+// 
 // # Typical errors
-// - `invalid-argument`:        The `remote-address` has the wrong address
-// family. (EAFNOSUPPORT)
-// - `invalid-argument`:        The IP address in `remote-address` is set to
-// INADDR_ANY (`0.0.0.0` / `::`). (EDESTADDRREQ, EADDRNOTAVAIL)
-// - `invalid-argument`:        The port in `remote-address` is set to 0.
-// (EDESTADDRREQ, EADDRNOTAVAIL)
-// - `invalid-argument`:        The socket is in "connected" mode and
-// `remote-address` is `some` value that does not match the address passed to
-// `connect`. (EISCONN)
-// - `invalid-argument`:        The socket is not "connected" and no value for
-// `remote-address` was provided. (EDESTADDRREQ)
-// - `remote-unreachable`:      The remote address is not reachable.
-// (ECONNRESET, ENETRESET on Windows, EHOSTUNREACH, EHOSTDOWN, ENETUNREACH,
-// ENETDOWN, ENONET)
+// - `invalid-argument`:        The `remote-address` has the wrong address family. (EAFNOSUPPORT)
+// - `invalid-argument`:        The IP address in `remote-address` is set to INADDR_ANY (`0.0.0.0` / `::`). (EDESTADDRREQ, EADDRNOTAVAIL)
+// - `invalid-argument`:        The port in `remote-address` is set to 0. (EDESTADDRREQ, EADDRNOTAVAIL)
+// - `invalid-argument`:        The socket is in "connected" mode and `remote-address` is `some` value that does not match the address passed to `connect`. (EISCONN)
+// - `invalid-argument`:        The socket is not "connected" and no value for `remote-address` was provided. (EDESTADDRREQ)
+// - `remote-unreachable`:      The remote address is not reachable. (ECONNRESET, ENETRESET on Windows, EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
 // - `connection-refused`:      The connection was refused. (ECONNREFUSED)
 // - `datagram-too-large`:      The datagram is too large. (EMSGSIZE)
-//
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/sendto.html>
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/sendmsg.html>
 // - <https://man7.org/linux/man-pages/man2/send.2.html>
 // - <https://man7.org/linux/man-pages/man2/sendmmsg.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-send>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-sendto>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasendmsg>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-send>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-sendto>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsasendmsg>
 // - <https://man.freebsd.org/cgi/man.cgi?query=send&sektion=2>
-extern wasip3_subtask_status_t
-sockets_method_udp_socket_send(sockets_method_udp_socket_send_args_t *args,
-                               sockets_result_void_error_code_t *result);
+extern wasip3_subtask_status_t sockets_method_udp_socket_send(sockets_method_udp_socket_send_args_t *args, sockets_result_void_error_code_t *result);
 // Receive a message on the socket.
-//
+// 
 // On success, the return value contains a tuple of the received data
 // and the address of the sender. Theoretical maximum length of the
 // data is 64 KiB. Though in practice, it will typically be less than
 // 1500 bytes.
-//
+// 
 // If the socket is connected, the sender address is guaranteed to
 // match the remote address passed to `connect`.
-//
+// 
 // # Typical errors
 // - `invalid-state`:        The socket has not been bound yet.
-// - `remote-unreachable`:   The remote address is not reachable. (ECONNRESET,
-// ENETRESET on Windows, EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
+// - `remote-unreachable`:   The remote address is not reachable. (ECONNRESET, ENETRESET on Windows, EHOSTUNREACH, EHOSTDOWN, ENETUNREACH, ENETDOWN, ENONET)
 // - `connection-refused`:   The connection was refused. (ECONNREFUSED)
-//
+// 
 // # References
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/recvfrom.html>
 // - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/recvmsg.html>
 // - <https://man7.org/linux/man-pages/man2/recv.2.html>
 // - <https://man7.org/linux/man-pages/man2/recvmmsg.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recvfrom>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/mswsock/nc-mswsock-lpfn_wsarecvmsg>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recvfrom>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/mswsock/nc-mswsock-lpfn_wsarecvmsg>
 // - <https://man.freebsd.org/cgi/man.cgi?query=recv&sektion=2>
-extern wasip3_subtask_status_t sockets_method_udp_socket_receive(
-    sockets_borrow_udp_socket_t self,
-    sockets_result_tuple2_list_u8_ip_socket_address_error_code_t *result);
+extern wasip3_subtask_status_t sockets_method_udp_socket_receive(sockets_borrow_udp_socket_t self, sockets_result_tuple2_list_u8_ip_socket_address_error_code_t *result);
 // Get the current bound address.
-//
+// 
 // POSIX mentions:
 // > If the socket has not been bound to a local name, the value
 // > stored in the object pointed to by `address` is unspecified.
-//
-// WASI is stricter and requires `get-local-address` to return `invalid-state`
-// when the socket hasn't been bound yet.
-//
+// 
+// WASI is stricter and requires `get-local-address` to return `invalid-state` when the socket hasn't been bound yet.
+// 
 // # Typical errors
 // - `invalid-state`: The socket is not bound to any local address.
-//
+// 
 // # References
-// -
-// <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html>
+// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getsockname.html>
 // - <https://man7.org/linux/man-pages/man2/getsockname.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getsockname>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getsockname>
 // - <https://man.freebsd.org/cgi/man.cgi?getsockname>
-extern bool
-sockets_method_udp_socket_get_local_address(sockets_borrow_udp_socket_t self,
-                                            sockets_ip_socket_address_t *ret,
-                                            sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_get_local_address(sockets_borrow_udp_socket_t self, sockets_ip_socket_address_t *ret, sockets_error_code_t *err);
 // Get the address the socket is currently "connected" to.
-//
+// 
 // # Typical errors
-// - `invalid-state`: The socket is not "connected" to a specific remote
-// address. (ENOTCONN)
-//
+// - `invalid-state`: The socket is not "connected" to a specific remote address. (ENOTCONN)
+// 
 // # References
-// -
-// <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html>
+// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getpeername.html>
 // - <https://man7.org/linux/man-pages/man2/getpeername.2.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getpeername>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-getpeername>
 // - <https://man.freebsd.org/cgi/man.cgi?query=getpeername&sektion=2&n=1>
-extern bool
-sockets_method_udp_socket_get_remote_address(sockets_borrow_udp_socket_t self,
-                                             sockets_ip_socket_address_t *ret,
-                                             sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_get_remote_address(sockets_borrow_udp_socket_t self, sockets_ip_socket_address_t *ret, sockets_error_code_t *err);
 // Whether this is a IPv4 or IPv6 socket.
-//
+// 
 // This is the value passed to the constructor.
-//
+// 
 // Equivalent to the SO_DOMAIN socket option.
-extern sockets_ip_address_family_t
-sockets_method_udp_socket_get_address_family(sockets_borrow_udp_socket_t self);
+extern sockets_ip_address_family_t sockets_method_udp_socket_get_address_family(sockets_borrow_udp_socket_t self);
 // Equivalent to the IP_TTL & IPV6_UNICAST_HOPS socket options.
-//
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-//
+// 
 // # Typical errors
 // - `invalid-argument`:     (set) The TTL value must be 1 or higher.
-extern bool sockets_method_udp_socket_get_unicast_hop_limit(
-    sockets_borrow_udp_socket_t self, uint8_t *ret, sockets_error_code_t *err);
-extern bool sockets_method_udp_socket_set_unicast_hop_limit(
-    sockets_borrow_udp_socket_t self, uint8_t value, sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_get_unicast_hop_limit(sockets_borrow_udp_socket_t self, uint8_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_set_unicast_hop_limit(sockets_borrow_udp_socket_t self, uint8_t value, sockets_error_code_t *err);
 // The kernel buffer space reserved for sends/receives on this socket.
-//
+// 
 // If the provided value is 0, an `invalid-argument` error is returned.
-// Any other value will never cause an error, but it might be silently clamped
-// and/or rounded. I.e. after setting a value, reading the same setting back may
-// return a different value.
-//
+// Any other value will never cause an error, but it might be silently clamped and/or rounded.
+// I.e. after setting a value, reading the same setting back may return a different value.
+// 
 // Equivalent to the SO_RCVBUF and SO_SNDBUF socket options.
-//
+// 
 // # Typical errors
 // - `invalid-argument`:     (set) The provided value was 0.
-extern bool sockets_method_udp_socket_get_receive_buffer_size(
-    sockets_borrow_udp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
-extern bool sockets_method_udp_socket_set_receive_buffer_size(
-    sockets_borrow_udp_socket_t self, uint64_t value,
-    sockets_error_code_t *err);
-extern bool sockets_method_udp_socket_get_send_buffer_size(
-    sockets_borrow_udp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
-extern bool
-sockets_method_udp_socket_set_send_buffer_size(sockets_borrow_udp_socket_t self,
-                                               uint64_t value,
-                                               sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_get_receive_buffer_size(sockets_borrow_udp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_set_receive_buffer_size(sockets_borrow_udp_socket_t self, uint64_t value, sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_get_send_buffer_size(sockets_borrow_udp_socket_t self, uint64_t *ret, sockets_error_code_t *err);
+extern bool sockets_method_udp_socket_set_send_buffer_size(sockets_borrow_udp_socket_t self, uint64_t value, sockets_error_code_t *err);
 
 // Imported Functions from `wasi:sockets/ip-name-lookup@0.3.0-rc-2025-09-16`
 // Resolve an internet host name to a list of IP addresses.
-//
-// Unicode domain names are automatically converted to ASCII using IDNA
-// encoding. If the input is an IP address string, the address is parsed and
-// returned as-is without making any external requests.
-//
+// 
+// Unicode domain names are automatically converted to ASCII using IDNA encoding.
+// If the input is an IP address string, the address is parsed and returned
+// as-is without making any external requests.
+// 
 // See the wasi-socket proposal README.md for a comparison with getaddrinfo.
-//
+// 
 // The results are returned in connection order preference.
-//
+// 
 // This function never succeeds with 0 results. It either fails or succeeds
 // with at least one address. Additionally, this function never returns
 // IPv4-mapped IPv6 addresses.
-//
+// 
 // The returned future will resolve to an error code in case of failure.
 // It will resolve to success once the returned stream is exhausted.
-//
+// 
 // # References:
-// -
-// <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getaddrinfo.html>
+// - <https://pubs.opengroup.org/onlinepubs/9699919799/functions/getaddrinfo.html>
 // - <https://man7.org/linux/man-pages/man3/getaddrinfo.3.html>
-// -
-// <https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getaddrinfo>
+// - <https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getaddrinfo>
 // - <https://man.freebsd.org/cgi/man.cgi?query=getaddrinfo&sektion=3>
-extern wasip3_subtask_status_t ip_name_lookup_resolve_addresses(
-    wasip3_string_t name,
-    ip_name_lookup_result_list_ip_address_error_code_t *result);
+extern wasip3_subtask_status_t ip_name_lookup_resolve_addresses(wasip3_string_t name, ip_name_lookup_result_list_ip_address_error_code_t *result);
 
 // Imported Functions from `wasi:random/random@0.3.0-rc-2025-09-16`
 // Return `len` cryptographically-secure random or pseudo-random bytes.
-//
+// 
 // This function must produce data at least as cryptographically secure and
 // fast as an adequately seeded cryptographically-secure pseudo-random
 // number generator (CSPRNG). It must not block, from the perspective of
 // the calling program, under any circumstances, including on the first
 // request and on requests for numbers of bytes. The returned data must
 // always be unpredictable.
-//
+// 
 // This function must always return fresh data. Deterministic environments
 // must omit this function, rather than implementing it with deterministic
 // data.
 extern void random_get_random_bytes(uint64_t len, wasip3_list_u8_t *ret);
 // Return a cryptographically-secure random or pseudo-random `u64` value.
-//
+// 
 // This function returns the same type of data as `get-random-bytes`,
 // represented as a `u64`.
 extern uint64_t random_get_random_u64(void);
 
 // Imported Functions from `wasi:random/insecure@0.3.0-rc-2025-09-16`
 // Return `len` insecure pseudo-random bytes.
-//
+// 
 // This function is not cryptographically secure. Do not use it for
 // anything related to security.
-//
+// 
 // There are no requirements on the values of the returned bytes, however
 // implementations are encouraged to return evenly distributed values with
 // a long period.
-extern void random_insecure_get_insecure_random_bytes(uint64_t len,
-                                                      wasip3_list_u8_t *ret);
+extern void random_insecure_get_insecure_random_bytes(uint64_t len, wasip3_list_u8_t *ret);
 // Return an insecure pseudo-random `u64` value.
-//
+// 
 // This function returns the same type of pseudo-random data as
 // `get-insecure-random-bytes`, represented as a `u64`.
 extern uint64_t random_insecure_get_insecure_random_u64(void);
 
 // Imported Functions from `wasi:random/insecure-seed@0.3.0-rc-2025-09-16`
 // Return a 128-bit value that may contain a pseudo-random value.
-//
+// 
 // The returned value is not required to be computed from a CSPRNG, and may
 // even be entirely deterministic. Host implementations are encouraged to
 // provide pseudo-random values to any program exposed to
 // attacker-controlled content, to enable DoS protection built into many
 // languages' hash-map implementations.
-//
+// 
 // This function is intended to only be called once, by a source language
 // to initialize Denial Of Service (DoS) protection in its hash-map
 // implementation.
-//
+// 
 // # Expected future evolution
-//
+// 
 // This will likely be changed to a value import, to prevent it from being
 // called multiple times and potentially used for purposes other than DoS
 // protection.
-extern void
-random_insecure_seed_get_insecure_seed(wasip3_tuple2_u64_u64_t *ret);
+extern void random_insecure_seed_get_insecure_seed(wasip3_tuple2_u64_u64_t *ret);
 
 // Exported Functions from `wasi:cli/run@0.3.0-rc-2025-09-16`
 wasip3_callback_code_t exports_wasi_cli_run_run();
@@ -2072,8 +1828,7 @@ wasip3_callback_code_t exports_wasi_cli_run_run_callback(wasip3_event_t *event);
 
 void wasip3_tuple2_string_string_free(wasip3_tuple2_string_string_t *ptr);
 
-void wasip3_list_tuple2_string_string_free(
-    wasip3_list_tuple2_string_string_t *ptr);
+void wasip3_list_tuple2_string_string_free(wasip3_list_tuple2_string_string_t *ptr);
 
 void wasip3_list_string_free(wasip3_list_string_t *ptr);
 
@@ -2086,61 +1841,42 @@ void stdin_result_void_error_code_free(stdin_result_void_error_code_t *ptr);
 typedef uint32_t stdin_stream_u8_writer_t;
 
 stdin_stream_u8_t stdin_stream_u8_new(stdin_stream_u8_writer_t *writer);
-wasip3_waitable_status_t stdin_stream_u8_read(stdin_stream_u8_t reader,
-                                              uint8_t *buf, size_t amt);
-wasip3_waitable_status_t stdin_stream_u8_write(stdin_stream_u8_writer_t writer,
-                                               const uint8_t *buf, size_t amt);
+wasip3_waitable_status_t stdin_stream_u8_read(stdin_stream_u8_t reader, uint8_t *buf, size_t amt);
+wasip3_waitable_status_t stdin_stream_u8_write(stdin_stream_u8_writer_t writer, const uint8_t *buf, size_t amt);
 wasip3_waitable_status_t stdin_stream_u8_cancel_read(stdin_stream_u8_t reader);
-wasip3_waitable_status_t
-stdin_stream_u8_cancel_write(stdin_stream_u8_writer_t writer);
+wasip3_waitable_status_t stdin_stream_u8_cancel_write(stdin_stream_u8_writer_t writer);
 void stdin_stream_u8_drop_readable(stdin_stream_u8_t reader);
 void stdin_stream_u8_drop_writable(stdin_stream_u8_writer_t writer);
 
+
 typedef uint32_t stdin_future_result_void_error_code_writer_t;
 
-stdin_future_result_void_error_code_t stdin_future_result_void_error_code_new(
-    stdin_future_result_void_error_code_writer_t *writer);
-wasip3_waitable_status_t stdin_future_result_void_error_code_read(
-    stdin_future_result_void_error_code_t reader,
-    stdin_result_void_error_code_t *buf);
-wasip3_waitable_status_t stdin_future_result_void_error_code_write(
-    stdin_future_result_void_error_code_writer_t writer,
-    const stdin_result_void_error_code_t *buf);
-wasip3_waitable_status_t stdin_future_result_void_error_code_cancel_read(
-    stdin_future_result_void_error_code_t reader);
-wasip3_waitable_status_t stdin_future_result_void_error_code_cancel_write(
-    stdin_future_result_void_error_code_writer_t writer);
-void stdin_future_result_void_error_code_drop_readable(
-    stdin_future_result_void_error_code_t reader);
-void stdin_future_result_void_error_code_drop_writable(
-    stdin_future_result_void_error_code_writer_t writer);
+stdin_future_result_void_error_code_t stdin_future_result_void_error_code_new(stdin_future_result_void_error_code_writer_t *writer);
+wasip3_waitable_status_t stdin_future_result_void_error_code_read(stdin_future_result_void_error_code_t reader, stdin_result_void_error_code_t *buf);
+wasip3_waitable_status_t stdin_future_result_void_error_code_write(stdin_future_result_void_error_code_writer_t writer, const stdin_result_void_error_code_t *buf);
+wasip3_waitable_status_t stdin_future_result_void_error_code_cancel_read(stdin_future_result_void_error_code_t reader);
+wasip3_waitable_status_t stdin_future_result_void_error_code_cancel_write(stdin_future_result_void_error_code_writer_t writer);
+void stdin_future_result_void_error_code_drop_readable(stdin_future_result_void_error_code_t reader);
+void stdin_future_result_void_error_code_drop_writable(stdin_future_result_void_error_code_writer_t writer);
+
 
 void stdout_result_void_error_code_free(stdout_result_void_error_code_t *ptr);
 
 void stderr_result_void_error_code_free(stderr_result_void_error_code_t *ptr);
 
-extern void terminal_input_terminal_input_drop_own(
-    terminal_input_own_terminal_input_t handle);
+extern void terminal_input_terminal_input_drop_own(terminal_input_own_terminal_input_t handle);
 
-extern terminal_input_borrow_terminal_input_t
-terminal_input_borrow_terminal_input(
-    terminal_input_own_terminal_input_t handle);
+extern terminal_input_borrow_terminal_input_t terminal_input_borrow_terminal_input(terminal_input_own_terminal_input_t handle);
 
-extern void terminal_output_terminal_output_drop_own(
-    terminal_output_own_terminal_output_t handle);
+extern void terminal_output_terminal_output_drop_own(terminal_output_own_terminal_output_t handle);
 
-extern terminal_output_borrow_terminal_output_t
-terminal_output_borrow_terminal_output(
-    terminal_output_own_terminal_output_t handle);
+extern terminal_output_borrow_terminal_output_t terminal_output_borrow_terminal_output(terminal_output_own_terminal_output_t handle);
 
-void terminal_stdin_option_own_terminal_input_free(
-    terminal_stdin_option_own_terminal_input_t *ptr);
+void terminal_stdin_option_own_terminal_input_free(terminal_stdin_option_own_terminal_input_t *ptr);
 
-void terminal_stdout_option_own_terminal_output_free(
-    terminal_stdout_option_own_terminal_output_t *ptr);
+void terminal_stdout_option_own_terminal_output_free(terminal_stdout_option_own_terminal_output_t *ptr);
 
-void terminal_stderr_option_own_terminal_output_free(
-    terminal_stderr_option_own_terminal_output_t *ptr);
+void terminal_stderr_option_own_terminal_output_free(terminal_stderr_option_own_terminal_output_t *ptr);
 
 void filesystem_option_datetime_free(filesystem_option_datetime_t *ptr);
 
@@ -2152,91 +1888,58 @@ void filesystem_directory_entry_free(filesystem_directory_entry_t *ptr);
 
 extern void filesystem_descriptor_drop_own(filesystem_own_descriptor_t handle);
 
-extern filesystem_borrow_descriptor_t
-filesystem_borrow_descriptor(filesystem_own_descriptor_t handle);
+extern filesystem_borrow_descriptor_t filesystem_borrow_descriptor(filesystem_own_descriptor_t handle);
 
-void filesystem_result_void_error_code_free(
-    filesystem_result_void_error_code_t *ptr);
+void filesystem_result_void_error_code_free(filesystem_result_void_error_code_t *ptr);
 
-void filesystem_result_descriptor_flags_error_code_free(
-    filesystem_result_descriptor_flags_error_code_t *ptr);
+void filesystem_result_descriptor_flags_error_code_free(filesystem_result_descriptor_flags_error_code_t *ptr);
 
-void filesystem_result_descriptor_type_error_code_free(
-    filesystem_result_descriptor_type_error_code_t *ptr);
+void filesystem_result_descriptor_type_error_code_free(filesystem_result_descriptor_type_error_code_t *ptr);
 
-void filesystem_result_descriptor_stat_error_code_free(
-    filesystem_result_descriptor_stat_error_code_t *ptr);
+void filesystem_result_descriptor_stat_error_code_free(filesystem_result_descriptor_stat_error_code_t *ptr);
 
-void filesystem_result_own_descriptor_error_code_free(
-    filesystem_result_own_descriptor_error_code_t *ptr);
+void filesystem_result_own_descriptor_error_code_free(filesystem_result_own_descriptor_error_code_t *ptr);
 
-void filesystem_result_string_error_code_free(
-    filesystem_result_string_error_code_t *ptr);
+void filesystem_result_string_error_code_free(filesystem_result_string_error_code_t *ptr);
 
-void filesystem_result_metadata_hash_value_error_code_free(
-    filesystem_result_metadata_hash_value_error_code_t *ptr);
+void filesystem_result_metadata_hash_value_error_code_free(filesystem_result_metadata_hash_value_error_code_t *ptr);
 
 typedef uint32_t filesystem_stream_u8_writer_t;
 
-filesystem_stream_u8_t
-filesystem_stream_u8_new(filesystem_stream_u8_writer_t *writer);
-wasip3_waitable_status_t
-filesystem_stream_u8_read(filesystem_stream_u8_t reader, uint8_t *buf,
-                          size_t amt);
-wasip3_waitable_status_t
-filesystem_stream_u8_write(filesystem_stream_u8_writer_t writer,
-                           const uint8_t *buf, size_t amt);
-wasip3_waitable_status_t
-filesystem_stream_u8_cancel_read(filesystem_stream_u8_t reader);
-wasip3_waitable_status_t
-filesystem_stream_u8_cancel_write(filesystem_stream_u8_writer_t writer);
+filesystem_stream_u8_t filesystem_stream_u8_new(filesystem_stream_u8_writer_t *writer);
+wasip3_waitable_status_t filesystem_stream_u8_read(filesystem_stream_u8_t reader, uint8_t *buf, size_t amt);
+wasip3_waitable_status_t filesystem_stream_u8_write(filesystem_stream_u8_writer_t writer, const uint8_t *buf, size_t amt);
+wasip3_waitable_status_t filesystem_stream_u8_cancel_read(filesystem_stream_u8_t reader);
+wasip3_waitable_status_t filesystem_stream_u8_cancel_write(filesystem_stream_u8_writer_t writer);
 void filesystem_stream_u8_drop_readable(filesystem_stream_u8_t reader);
 void filesystem_stream_u8_drop_writable(filesystem_stream_u8_writer_t writer);
 
+
 typedef uint32_t filesystem_future_result_void_error_code_writer_t;
 
-filesystem_future_result_void_error_code_t
-filesystem_future_result_void_error_code_new(
-    filesystem_future_result_void_error_code_writer_t *writer);
-wasip3_waitable_status_t filesystem_future_result_void_error_code_read(
-    filesystem_future_result_void_error_code_t reader,
-    filesystem_result_void_error_code_t *buf);
-wasip3_waitable_status_t filesystem_future_result_void_error_code_write(
-    filesystem_future_result_void_error_code_writer_t writer,
-    const filesystem_result_void_error_code_t *buf);
-wasip3_waitable_status_t filesystem_future_result_void_error_code_cancel_read(
-    filesystem_future_result_void_error_code_t reader);
-wasip3_waitable_status_t filesystem_future_result_void_error_code_cancel_write(
-    filesystem_future_result_void_error_code_writer_t writer);
-void filesystem_future_result_void_error_code_drop_readable(
-    filesystem_future_result_void_error_code_t reader);
-void filesystem_future_result_void_error_code_drop_writable(
-    filesystem_future_result_void_error_code_writer_t writer);
+filesystem_future_result_void_error_code_t filesystem_future_result_void_error_code_new(filesystem_future_result_void_error_code_writer_t *writer);
+wasip3_waitable_status_t filesystem_future_result_void_error_code_read(filesystem_future_result_void_error_code_t reader, filesystem_result_void_error_code_t *buf);
+wasip3_waitable_status_t filesystem_future_result_void_error_code_write(filesystem_future_result_void_error_code_writer_t writer, const filesystem_result_void_error_code_t *buf);
+wasip3_waitable_status_t filesystem_future_result_void_error_code_cancel_read(filesystem_future_result_void_error_code_t reader);
+wasip3_waitable_status_t filesystem_future_result_void_error_code_cancel_write(filesystem_future_result_void_error_code_writer_t writer);
+void filesystem_future_result_void_error_code_drop_readable(filesystem_future_result_void_error_code_t reader);
+void filesystem_future_result_void_error_code_drop_writable(filesystem_future_result_void_error_code_writer_t writer);
+
 
 typedef uint32_t filesystem_stream_directory_entry_writer_t;
 
-filesystem_stream_directory_entry_t filesystem_stream_directory_entry_new(
-    filesystem_stream_directory_entry_writer_t *writer);
-wasip3_waitable_status_t filesystem_stream_directory_entry_read(
-    filesystem_stream_directory_entry_t reader,
-    filesystem_directory_entry_t *buf, size_t amt);
-wasip3_waitable_status_t filesystem_stream_directory_entry_write(
-    filesystem_stream_directory_entry_writer_t writer,
-    const filesystem_directory_entry_t *buf, size_t amt);
-wasip3_waitable_status_t filesystem_stream_directory_entry_cancel_read(
-    filesystem_stream_directory_entry_t reader);
-wasip3_waitable_status_t filesystem_stream_directory_entry_cancel_write(
-    filesystem_stream_directory_entry_writer_t writer);
-void filesystem_stream_directory_entry_drop_readable(
-    filesystem_stream_directory_entry_t reader);
-void filesystem_stream_directory_entry_drop_writable(
-    filesystem_stream_directory_entry_writer_t writer);
+filesystem_stream_directory_entry_t filesystem_stream_directory_entry_new(filesystem_stream_directory_entry_writer_t *writer);
+wasip3_waitable_status_t filesystem_stream_directory_entry_read(filesystem_stream_directory_entry_t reader, filesystem_directory_entry_t *buf, size_t amt);
+wasip3_waitable_status_t filesystem_stream_directory_entry_write(filesystem_stream_directory_entry_writer_t writer, const filesystem_directory_entry_t *buf, size_t amt);
+wasip3_waitable_status_t filesystem_stream_directory_entry_cancel_read(filesystem_stream_directory_entry_t reader);
+wasip3_waitable_status_t filesystem_stream_directory_entry_cancel_write(filesystem_stream_directory_entry_writer_t writer);
+void filesystem_stream_directory_entry_drop_readable(filesystem_stream_directory_entry_t reader);
+void filesystem_stream_directory_entry_drop_writable(filesystem_stream_directory_entry_writer_t writer);
 
-void filesystem_preopens_tuple2_own_descriptor_string_free(
-    filesystem_preopens_tuple2_own_descriptor_string_t *ptr);
 
-void filesystem_preopens_list_tuple2_own_descriptor_string_free(
-    filesystem_preopens_list_tuple2_own_descriptor_string_t *ptr);
+void filesystem_preopens_tuple2_own_descriptor_string_free(filesystem_preopens_tuple2_own_descriptor_string_t *ptr);
+
+void filesystem_preopens_list_tuple2_own_descriptor_string_free(filesystem_preopens_list_tuple2_own_descriptor_string_t *ptr);
 
 void sockets_ip_address_free(sockets_ip_address_t *ptr);
 
@@ -2244,29 +1947,23 @@ void sockets_ip_socket_address_free(sockets_ip_socket_address_t *ptr);
 
 extern void sockets_tcp_socket_drop_own(sockets_own_tcp_socket_t handle);
 
-extern sockets_borrow_tcp_socket_t
-sockets_borrow_tcp_socket(sockets_own_tcp_socket_t handle);
+extern sockets_borrow_tcp_socket_t sockets_borrow_tcp_socket(sockets_own_tcp_socket_t handle);
 
 extern void sockets_udp_socket_drop_own(sockets_own_udp_socket_t handle);
 
-extern sockets_borrow_udp_socket_t
-sockets_borrow_udp_socket(sockets_own_udp_socket_t handle);
+extern sockets_borrow_udp_socket_t sockets_borrow_udp_socket(sockets_own_udp_socket_t handle);
 
-void sockets_result_own_tcp_socket_error_code_free(
-    sockets_result_own_tcp_socket_error_code_t *ptr);
+void sockets_result_own_tcp_socket_error_code_free(sockets_result_own_tcp_socket_error_code_t *ptr);
 
 void sockets_result_void_error_code_free(sockets_result_void_error_code_t *ptr);
 
-void sockets_result_stream_own_tcp_socket_error_code_free(
-    sockets_result_stream_own_tcp_socket_error_code_t *ptr);
+void sockets_result_stream_own_tcp_socket_error_code_free(sockets_result_stream_own_tcp_socket_error_code_t *ptr);
 
-void sockets_result_ip_socket_address_error_code_free(
-    sockets_result_ip_socket_address_error_code_t *ptr);
+void sockets_result_ip_socket_address_error_code_free(sockets_result_ip_socket_address_error_code_t *ptr);
 
 void sockets_result_bool_error_code_free(sockets_result_bool_error_code_t *ptr);
 
-void sockets_result_duration_error_code_free(
-    sockets_result_duration_error_code_t *ptr);
+void sockets_result_duration_error_code_free(sockets_result_duration_error_code_t *ptr);
 
 void sockets_result_u32_error_code_free(sockets_result_u32_error_code_t *ptr);
 
@@ -2274,98 +1971,69 @@ void sockets_result_u8_error_code_free(sockets_result_u8_error_code_t *ptr);
 
 void sockets_result_u64_error_code_free(sockets_result_u64_error_code_t *ptr);
 
-void sockets_result_own_udp_socket_error_code_free(
-    sockets_result_own_udp_socket_error_code_t *ptr);
+void sockets_result_own_udp_socket_error_code_free(sockets_result_own_udp_socket_error_code_t *ptr);
 
 void wasip3_list_u8_free(wasip3_list_u8_t *ptr);
 
-void sockets_option_ip_socket_address_free(
-    sockets_option_ip_socket_address_t *ptr);
+void sockets_option_ip_socket_address_free(sockets_option_ip_socket_address_t *ptr);
 
-void sockets_tuple2_list_u8_ip_socket_address_free(
-    sockets_tuple2_list_u8_ip_socket_address_t *ptr);
+void sockets_tuple2_list_u8_ip_socket_address_free(sockets_tuple2_list_u8_ip_socket_address_t *ptr);
 
-void sockets_result_tuple2_list_u8_ip_socket_address_error_code_free(
-    sockets_result_tuple2_list_u8_ip_socket_address_error_code_t *ptr);
+void sockets_result_tuple2_list_u8_ip_socket_address_error_code_free(sockets_result_tuple2_list_u8_ip_socket_address_error_code_t *ptr);
 
 typedef uint32_t sockets_stream_own_tcp_socket_writer_t;
 
-sockets_stream_own_tcp_socket_t sockets_stream_own_tcp_socket_new(
-    sockets_stream_own_tcp_socket_writer_t *writer);
-wasip3_waitable_status_t
-sockets_stream_own_tcp_socket_read(sockets_stream_own_tcp_socket_t reader,
-                                   sockets_own_tcp_socket_t *buf, size_t amt);
-wasip3_waitable_status_t sockets_stream_own_tcp_socket_write(
-    sockets_stream_own_tcp_socket_writer_t writer,
-    const sockets_own_tcp_socket_t *buf, size_t amt);
-wasip3_waitable_status_t sockets_stream_own_tcp_socket_cancel_read(
-    sockets_stream_own_tcp_socket_t reader);
-wasip3_waitable_status_t sockets_stream_own_tcp_socket_cancel_write(
-    sockets_stream_own_tcp_socket_writer_t writer);
-void sockets_stream_own_tcp_socket_drop_readable(
-    sockets_stream_own_tcp_socket_t reader);
-void sockets_stream_own_tcp_socket_drop_writable(
-    sockets_stream_own_tcp_socket_writer_t writer);
+sockets_stream_own_tcp_socket_t sockets_stream_own_tcp_socket_new(sockets_stream_own_tcp_socket_writer_t *writer);
+wasip3_waitable_status_t sockets_stream_own_tcp_socket_read(sockets_stream_own_tcp_socket_t reader, sockets_own_tcp_socket_t *buf, size_t amt);
+wasip3_waitable_status_t sockets_stream_own_tcp_socket_write(sockets_stream_own_tcp_socket_writer_t writer, const sockets_own_tcp_socket_t *buf, size_t amt);
+wasip3_waitable_status_t sockets_stream_own_tcp_socket_cancel_read(sockets_stream_own_tcp_socket_t reader);
+wasip3_waitable_status_t sockets_stream_own_tcp_socket_cancel_write(sockets_stream_own_tcp_socket_writer_t writer);
+void sockets_stream_own_tcp_socket_drop_readable(sockets_stream_own_tcp_socket_t reader);
+void sockets_stream_own_tcp_socket_drop_writable(sockets_stream_own_tcp_socket_writer_t writer);
+
 
 typedef uint32_t sockets_stream_u8_writer_t;
 
 sockets_stream_u8_t sockets_stream_u8_new(sockets_stream_u8_writer_t *writer);
-wasip3_waitable_status_t sockets_stream_u8_read(sockets_stream_u8_t reader,
-                                                uint8_t *buf, size_t amt);
-wasip3_waitable_status_t
-sockets_stream_u8_write(sockets_stream_u8_writer_t writer, const uint8_t *buf,
-                        size_t amt);
-wasip3_waitable_status_t
-sockets_stream_u8_cancel_read(sockets_stream_u8_t reader);
-wasip3_waitable_status_t
-sockets_stream_u8_cancel_write(sockets_stream_u8_writer_t writer);
+wasip3_waitable_status_t sockets_stream_u8_read(sockets_stream_u8_t reader, uint8_t *buf, size_t amt);
+wasip3_waitable_status_t sockets_stream_u8_write(sockets_stream_u8_writer_t writer, const uint8_t *buf, size_t amt);
+wasip3_waitable_status_t sockets_stream_u8_cancel_read(sockets_stream_u8_t reader);
+wasip3_waitable_status_t sockets_stream_u8_cancel_write(sockets_stream_u8_writer_t writer);
 void sockets_stream_u8_drop_readable(sockets_stream_u8_t reader);
 void sockets_stream_u8_drop_writable(sockets_stream_u8_writer_t writer);
 
+
 typedef uint32_t sockets_future_result_void_error_code_writer_t;
 
-sockets_future_result_void_error_code_t
-sockets_future_result_void_error_code_new(
-    sockets_future_result_void_error_code_writer_t *writer);
-wasip3_waitable_status_t sockets_future_result_void_error_code_read(
-    sockets_future_result_void_error_code_t reader,
-    sockets_result_void_error_code_t *buf);
-wasip3_waitable_status_t sockets_future_result_void_error_code_write(
-    sockets_future_result_void_error_code_writer_t writer,
-    const sockets_result_void_error_code_t *buf);
-wasip3_waitable_status_t sockets_future_result_void_error_code_cancel_read(
-    sockets_future_result_void_error_code_t reader);
-wasip3_waitable_status_t sockets_future_result_void_error_code_cancel_write(
-    sockets_future_result_void_error_code_writer_t writer);
-void sockets_future_result_void_error_code_drop_readable(
-    sockets_future_result_void_error_code_t reader);
-void sockets_future_result_void_error_code_drop_writable(
-    sockets_future_result_void_error_code_writer_t writer);
+sockets_future_result_void_error_code_t sockets_future_result_void_error_code_new(sockets_future_result_void_error_code_writer_t *writer);
+wasip3_waitable_status_t sockets_future_result_void_error_code_read(sockets_future_result_void_error_code_t reader, sockets_result_void_error_code_t *buf);
+wasip3_waitable_status_t sockets_future_result_void_error_code_write(sockets_future_result_void_error_code_writer_t writer, const sockets_result_void_error_code_t *buf);
+wasip3_waitable_status_t sockets_future_result_void_error_code_cancel_read(sockets_future_result_void_error_code_t reader);
+wasip3_waitable_status_t sockets_future_result_void_error_code_cancel_write(sockets_future_result_void_error_code_writer_t writer);
+void sockets_future_result_void_error_code_drop_readable(sockets_future_result_void_error_code_t reader);
+void sockets_future_result_void_error_code_drop_writable(sockets_future_result_void_error_code_writer_t writer);
+
 
 void ip_name_lookup_ip_address_free(ip_name_lookup_ip_address_t *ptr);
 
 void ip_name_lookup_list_ip_address_free(ip_name_lookup_list_ip_address_t *ptr);
 
-void ip_name_lookup_result_list_ip_address_error_code_free(
-    ip_name_lookup_result_list_ip_address_error_code_t *ptr);
+void ip_name_lookup_result_list_ip_address_error_code_free(ip_name_lookup_result_list_ip_address_error_code_t *ptr);
 
-void exports_wasi_cli_run_result_void_void_free(
-    exports_wasi_cli_run_result_void_void_t *ptr);
-void exports_wasi_cli_run_run_return(
-    exports_wasi_cli_run_result_void_void_t ret);
+void exports_wasi_cli_run_result_void_void_free(exports_wasi_cli_run_result_void_void_t *ptr);
+void exports_wasi_cli_run_run_return(exports_wasi_cli_run_result_void_void_t ret);
 
 // Sets the string `ret` to reference the input string `s` without copying it
-void wasip3_string_set(wasip3_string_t *ret, const char *s);
+void wasip3_string_set(wasip3_string_t *ret, const char*s);
 
 // Creates a copy of the input nul-terminated string `s` and
 // stores it into the component model string `ret`.
-void wasip3_string_dup(wasip3_string_t *ret, const char *s);
+void wasip3_string_dup(wasip3_string_t *ret, const char*s);
 
 // Creates a copy of the input string `s` with length `len` and
 // stores it into the component model string `ret`.
-// The length is specified in code units (bytes for UTF-8, 16-bit values for
-// UTF-16).
-void wasip3_string_dup_n(wasip3_string_t *ret, const char *s, size_t len);
+// The length is specified in code units (bytes for UTF-8, 16-bit values for UTF-16).
+void wasip3_string_dup_n(wasip3_string_t *ret, const char*s, size_t len);
 
 // Deallocates the string pointed to by `ret`, deallocating
 // the memory behind the string.
