@@ -290,6 +290,7 @@ add_wasilibc_test(utime.c FS FAILP3)
 add_wasilibc_test(rewinddir.c FS FAILP3)
 add_wasilibc_test(seekdir.c FS FAILP3)
 add_wasilibc_test(usleep.c FAILP3)
+add_wasilibc_test(nanosleep.c FAILP3)
 add_wasilibc_test(write.c FS FAILP3)
 
 if (TARGET_TRIPLE MATCHES "-threads")

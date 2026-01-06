@@ -17,36 +17,10 @@ file(
   headers/public/*.h
 )
 
-# TODO: these headers are not actually installed in the sysroot since the
-# musl-sourced ones are. These should probably be deleted from the source
-# tree and the musl ones used instead.
-list(REMOVE_ITEM globbed_headers
-  headers/public/dirent.h
-  headers/public/errno.h
-  headers/public/fcntl.h
-  headers/public/inttypes.h
-  headers/public/netinet/in.h
-  headers/public/poll.h
-  headers/public/stdlib.h
-  headers/public/string.h
-  headers/public/sys/ioctl.h
-  headers/public/sys/resource.h
-  headers/public/sys/select.h
-  headers/public/sys/socket.h
-  headers/public/sys/stat.h
-  headers/public/sys/time.h
-  headers/public/sys/times.h
-  headers/public/sys/types.h
-  headers/public/sys/uio.h
-  headers/public/sys/un.h
-  headers/public/time.h
-  headers/public/unistd.h
-  headers/public/wchar.h
-)
-
 if (NOT (WASI STREQUAL "p2"))
   list(REMOVE_ITEM globbed_headers headers/public/wasi/__generated_wasip2.h)
 endif()
+
 if (NOT (WASI STREQUAL "p3"))
   list(REMOVE_ITEM globbed_headers headers/public/wasi/__generated_wasip3.h)
 endif()
@@ -217,7 +191,7 @@ foreach(file crt/crt1.c
   # create a custom target for each file
   add_library(${filename}.o OBJECT ${file})
   target_link_libraries(${filename}.o PUBLIC musl-top-half-interface)
-  set_target_properties(${filename}.o PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+  set_pic(${filename}.o)
   target_compile_options(${filename}.o PRIVATE -fvisibility=default)
 
   # add a custom command to compile the file

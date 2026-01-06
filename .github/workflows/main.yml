@@ -37,7 +37,10 @@ jobs:
             os: windows-2025
             clang_version: 20.1.8
             upload: windows-clang-20
-            args: -DBUILD_SHARED=OFF
+          - name: Build on WASIp2 Windows x86_64
+            os: windows-2025
+            clang_version: 20.1.8
+            args: -DTARGET_TRIPLE=wasm32-wasip2
 
           # Other versions of LLVM
           - name: Build with LLVM 11
@@ -221,6 +224,10 @@ jobs:
       with:
         submodules: true
     - run: cmake -S . -B build -DBUILD_TESTS=ON -G Ninja -DCMAKE_C_COMPILER=clang
+    - run: ninja -C build format-check
+    - run: cmake -S . -B build -DTARGET_TRIPLE=wasm32-wasip2
+    - run: ninja -C build format-check
+    - run: cmake -S . -B build -DTARGET_TRIPLE=wasm32-wasip1-threads
     - run: ninja -C build format-check
 
   rustfmt:

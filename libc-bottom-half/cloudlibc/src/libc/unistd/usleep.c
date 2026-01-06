@@ -13,6 +13,8 @@ int usleep(useconds_t useconds) {
 #if defined(__wasip1__)
   clockid_t clock_id = CLOCK_REALTIME;
 #elif defined(__wasip2__) || defined(__wasip3__)
+  // FIXME(WebAssembly/WASI#857): wasip2/p3 only supports the monotonic clock
+  // for sleeping.
   clockid_t clock_id = CLOCK_MONOTONIC;
 #else
 # error "Unsupported WASI version"

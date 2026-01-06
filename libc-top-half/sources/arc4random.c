@@ -3,8 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <wasi/libc.h>
 #include <wasi/api.h>
+#include <wasi/libc.h>
 
 void arc4random_buf(void* buffer, size_t len)
 {
