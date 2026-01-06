@@ -6,7 +6,6 @@
 #ifndef __wasip1__
 
 #include <poll.h>
-#include <wasi/wasip2.h>
 
 /// Opaque state that the `poll` function manages for itself.
 typedef struct poll_state_t poll_state_t;
@@ -18,6 +17,8 @@ typedef struct poll_state_t poll_state_t;
 void __wasilibc_poll_ready(poll_state_t *state, short events);
 
 #ifdef __wasip2__
+
+#include <wasi/wasip2.h>
 
 /// Adds the `pollable` to the `state` provided.
 ///

@@ -1,13 +1,41 @@
-include(ba-download)
+# Enable turning this rule off entirely if so desired.
+option(BINDINGS_TARGET "Generate bindings target" ON)
+if (NOT BINDINGS_TARGET)
+  return()
+endif()
 
-ba_download(
-  wit-bindgen
-  "https://github.com/bytecodealliance/wit-bindgen"
-  "0.50.0"
-)
-ExternalProject_Get_Property(wit-bindgen SOURCE_DIR)
-set(wit_bindgen "${SOURCE_DIR}/wit-bindgen")
+# If `wit-bindgen` is on the system and has the right version, favor that,
+# otherwise download a known good version.
+find_program(WIT_BINDGEN_EXECUTABLE NAMES wit-bindgen)
+if(WIT_BINDGEN_EXECUTABLE)
+  message(STATUS "Found wit-bindgen: ${WIT_BINDGEN_EXECUTABLE}")
 
+  execute_process(
+    COMMAND ${WIT_BINDGEN_EXECUTABLE} --version
+    OUTPUT_VARIABLE WIT_BINDGEN_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+  if (NOT (WIT_BINDGEN_VERSION MATCHES "0\\.50\\.0"))
+    message(WARNING "wit-bindgen version 0.50.0 is required, found: ${WIT_BINDGEN_VERSION}")
+    set(WIT_BINDGEN_EXECUTABLE "")
+  endif()
+endif()
+
+if (NOT WIT_BINDGEN_EXECUTABLE)
+  include(ba-download)
+  ba_download(
+    wit-bindgen
+    "https://github.com/bytecodealliance/wit-bindgen"
+    "0.50.0"
+  )
+  ExternalProject_Get_Property(wit-bindgen SOURCE_DIR)
+  set(wit_bindgen "${SOURCE_DIR}/wit-bindgen")
+else()
+  add_custom_target(wit-bindgen)
+  set(wit_bindgen ${WIT_BINDGEN_EXECUTABLE})
+endif()
+
+include(ExternalProject)
 set(p2 0.2.0)
 ExternalProject_Add(
   wasip2-wits

@@ -2,10 +2,10 @@
 //
 // SPDX-License-Identifier: BSD-2-Clause
 
-#include <sys/ioctl.h>
-
+#include <_/cdefs.h>
 #include <errno.h>
 #include <stdarg.h>
+#include <sys/ioctl.h>
 #include <wasi/api.h>
 #include <wasi/descriptor_table.h>
 
